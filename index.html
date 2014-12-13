@@ -5,69 +5,14 @@
 	<title>InfoVis</title>
 	<link rel="stylesheet" type="text/css" media="screen" href="style.css" />
 	<script src="jquery-2.1.1.min.js" charset="utf-8"></script>
-	<script src="htmlparser.js" charset="utf-8"></script>
-	<script src="html2json.js" charset="utf-8"></script>
-
-
-<script language="javascript">
-
-var content;
-var array = new Array();
-
-$(document).ready(function() {
-
-	$.ajax({
-		url: "http://www.medien.ifi.lmu.de/cgi-bin/search.pl?all:all:all:all:all",
-	  success: success,
-	});
-
- });
-
-function success(data){
- content = data;
-
- $(".loader").hide();
- $(".raw_data").html(content);
-
- table = $(".pubdb");
-
- articles = $(".pubdb tbody tr").each(function() {
-
-   articleArray = new Array();
-
-
-   $(this).children("td").each(function() {
-
-		  articleArray.push($(this).children("a").text());
-
-	 });
-
-
-	array.push(articleArray);
- });
-
-
-
-console.log(array);
-}
-
-
-</script>
-
-
 </head>
 <body>
-  <div class="loader">LOADING DATA...</div>
+	<div class="loader">LOADING DATA...</div>
+	<div class="raw_data" style="display:none"></div>
 
-	<div class="raw_data"></div>
-
-
-
-</head>
-<body>
 	<div id="container"></div>
  	<script src="d3.min.js" charset="utf-8"></script>
- 	<!--<script src="randomColor.js" charset="utf-8"></script>
- 	<script src="project.js"></script>-->
+ 	<script src="randomColor.js" charset="utf-8"></script>
+ 	<script src="project.js"></script>
 </body>
 </html>
