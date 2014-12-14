@@ -4,14 +4,20 @@
 
 	$(document).ready(function() {
 
-		$.ajax({
+		/*$.ajax({
 			url: "http://www.medien.ifi.lmu.de/cgi-bin/search.pl?all:all:all:all:all",
+		  	success: success
+		});*/
+
+		$.ajax({
+			url: "helper.php",
 		  	success: success
 		});
 
 	 });
 
 	function success(data){
+		console.log(data);
 		content = data;
 
 		$(".loader").hide();
@@ -71,11 +77,11 @@
 
 		var container = d3.select('#container')
 			.append('svg')
-			.attr('width', 1000)
-			.attr('height', 1000);
+			.attr('width', window.innerWidth)
+			.attr('height', window.innerHeight);
 
 		var items = container.selectAll('rect');
-		items
+		/*items
 			.data(data)
 			.enter().append('rect')
 			.style("stroke", "gray")
@@ -94,28 +100,34 @@
 	          d3.select( this )
 	            .transition()
 	            .style( 'fill', 'white' );
-	        } );
+	        } );*/
 
 
 	    items
 			.data(data)
 			.enter().append('text')
 			.text(function(d,i){return data[i]})
-	        .attr("x", function(d,i){return (i%10)*180;})
-	        .attr("y", function(d,i){return Math.floor(i/10)*30 +15})
-	        .style("opacity",0);
+	        .attr("x", function(d,i){return (i%14)*100;})
+	        .attr("y", function(d,i){return Math.floor(i/14)*20 + 50})
+	        .style("opacity",0)
+	        .style("font-size", function(d,i){
+	        	var count = authors[i].papers.length;
+	        	if(count > 18) return authors[i].papers.length/3 +'px';
+	        	return '9px';
+	        })
+	        .style('fill', function(d,i){return randomColor()});
 
 		container.selectAll('rect')
 			.transition()
 			.duration(250)
-			.delay(function(d,i){return i*25})
+			.delay(function(d,i){return i*10})
 			.each("start", function() { d3.select(this).style("opacity", "0"); })
 			.ease("linear")
 			.style("opacity", 1);
 		container.selectAll('text')
 			.transition()
 			.duration(250)
-			.delay(function(d,i){return i*25})
+			.delay(function(d,i){return i*10})
 			.each("start", function() { d3.select(this).style("opacity", "0"); })
 			.ease("linear")
 			.style("opacity", 1);
