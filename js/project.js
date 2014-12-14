@@ -104,7 +104,7 @@
 	        .attr("x", function(d,i){return (i%10)*180;})
 	        .attr("y", function(d,i){return Math.floor(i/10)*30 +15})
 	        .style("opacity",0);
-			
+
 		container.selectAll('rect')
 			.transition()
 			.duration(250)
