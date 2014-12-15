@@ -1,10 +1,10 @@
 	var content;
 	var papers = new Array();
 	var authors = new Array();
-	/*var HEIGHT = window.innerHeight;
-	var WIDTH = window.innerWidth;*/
-	var HEIGHT = 800;
-	var WIDTH = 1000;
+	var HEIGHT = window.innerHeight-25;
+	var WIDTH = window.innerWidth-25;
+	/*var HEIGHT = 800;
+	var WIDTH = 1000;*/
 
 	var pixels = [];	
 	for(var y=0; y<HEIGHT; y++){
@@ -175,7 +175,28 @@
 	        .attr("y", function(d,i){
 	        	return data[i].y;
 	        })
-	        .style("opacity",0);
+	        .style("cursor", "pointer")
+	        .style("font-weight", function(d,i){
+	        	if(authors[i].papers.length > 25) return 'bold';
+	        	return 'normal';
+	        })
+	        .style("opacity",0)
+	        .on( 'mouseenter', function() {
+	          d3.select( this )
+	            .transition()
+	            .style('opacity', 1)
+	            .style('font-weight', 'bold')
+	            .style('font-size', '25px')
+	            .style( 'fill', 'red' );
+	        } )
+	        .on( 'mouseleave', function(d,i) {
+	          d3.select( this )
+	            .transition()
+	            .style('opacity', Math.max(0.1, authors[i].papers.length/15))
+	            .style('font-weight', 'normal')
+	            .style('font-size', '12px')
+	            .style( 'fill', 'black' );
+	        } );
 	        //.style('fill', function(d,i){return randomColor()});
 
 		container.selectAll('rect')
@@ -192,7 +213,7 @@
 			.each("start", function() { d3.select(this).style("opacity", "0"); })
 			.ease("linear")
 			.style("opacity", function(d,i){
-				return authors[i].papers.length/10;
+				return Math.max(0.1, authors[i].papers.length/15);
 			});
 			/*.style("font-size", function(d,i){
 				return authors[i].papers.length;
