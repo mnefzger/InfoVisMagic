@@ -11,6 +11,7 @@ $(document).ready(function() {
 
 $.ajax({
   url: "helper.php",
+  
   success: success
 });
 
@@ -26,6 +27,7 @@ function success(data){
 
   articles = $(".pubdb tbody tr").each(function() {
     if($(this).children().length > 1){
+      var year = $(this).children().eq(0).
       var title = $(this).children().eq(1).children('b').children('a').text();
       var info = $(this).children().eq(1).children('i').text();
 
