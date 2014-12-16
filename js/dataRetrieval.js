@@ -1,3 +1,6 @@
+var papers = new Array();
+var authors = new Array();
+var content;
 
 $(document).ready(function() {
 
@@ -36,7 +39,7 @@ function success(data){
     }
   });
 
-  //makeItHappen();
+  display();
 };
 
 var getAuthors = function(data, title){
