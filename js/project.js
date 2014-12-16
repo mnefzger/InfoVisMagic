@@ -18,7 +18,7 @@ var display =  function(){
 	.attr("width", WIDTH)
 	.attr("height", HEIGHT)
 	.append("g")
-    .call(d3.behavior.zoom().scaleExtent([1, 8]).on("zoom", zoom))
+    .call(d3.behavior.zoom().scaleExtent([1, 10]).on("zoom", zoom))
   	.append("g");
 
 	var nodes = new Array();
