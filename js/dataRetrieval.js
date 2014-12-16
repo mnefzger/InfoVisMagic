@@ -11,7 +11,7 @@ $(document).ready(function() {
 
 $.ajax({
   url: "helper.php",
-  
+
   success: success
 });
 
@@ -24,21 +24,25 @@ function success(data){
   $(".raw_data").html(content);
 
   table = $(".pubdb");
+  var year;
 
   articles = $(".pubdb tbody tr").each(function() {
-    if($(this).children().length > 1){
-      var year = $(this).children().eq(0).
-      var title = $(this).children().eq(1).children('b').children('a').text();
-      var info = $(this).children().eq(1).children('i').text();
-
-      var entry = {
-        authors: getAuthors($(this).children().eq(1), title),
-        title: title,
-        info: info
-      }
-
-      papers.push(entry);
+    // set year
+    if($(this).children().length < 2){
+      year = $(this).children('.year_separator').children('b').text();
     }
+
+    var title = $(this).children().eq(1).children('b').children('a').text();
+    var info = $(this).children().eq(1).children('i').text();
+
+    var entry = {
+      authors: getAuthors($(this).children().eq(1), title),
+      title: title,
+      info: info,
+      year: year
+    }
+
+    papers.push(entry);
   });
 
   display();
