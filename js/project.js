@@ -1,6 +1,6 @@
 var display =  function(){	
-	var HEIGHT = 500;
-	var WIDTH = 1000;
+	var HEIGHT = 1060;
+	var WIDTH = 1900;
 
 	padding = 2,
 	maxRadius = 150; // separation between nodes
@@ -16,7 +16,10 @@ var display =  function(){
 	//create svg area
 	var svg = d3.select("#container").append("svg")
 	.attr("width", WIDTH)
-	.attr("height", HEIGHT);
+	.attr("height", HEIGHT)
+	.append("g")
+    .call(d3.behavior.zoom().scaleExtent([1, 8]).on("zoom", zoom))
+  	.append("g");
 
 	var nodes = new Array();
 
@@ -66,10 +69,9 @@ var display =  function(){
 	}
 
 	var force = d3.layout.force()
-    .gravity(0)
-    .charge(5)
-    .friction(0)
-    .distance(20)
+    //.gravity(0)
+    .charge(-50)
+    //.friction(0)
     .nodes(nodes)
     .size([WIDTH, HEIGHT])
     .start();
@@ -96,5 +98,9 @@ var display =  function(){
 			return d.radius;
 		})
 		.call(force.drag);
+
+	function zoom() {
+  		svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+	}
 
 }
