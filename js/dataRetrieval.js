@@ -1,6 +1,6 @@
 var papers = new Array();
 var authors = new Array();
-var content;
+var yearsArray = new Array();
 
 $(document).ready(function() {
 
@@ -11,17 +11,15 @@ $(document).ready(function() {
 
 $.ajax({
   url: "helper.php",
-
   success: success
 });
 
 });
 
 function success(data){
-  content = data;
 
   $(".loader").hide();
-  $(".raw_data").html(content);
+  $(".raw_data").html(data);
 
   table = $(".pubdb");
   var year;
@@ -30,6 +28,7 @@ function success(data){
     // set year
     if($(this).children().length < 2){
       year = $(this).children('.year_separator').children('b').text();
+      yearsArray.push(year);
     }
 
     var title = $(this).children().eq(1).children('b').children('a').text();
@@ -46,6 +45,7 @@ function success(data){
   });
 
   display();
+  populateControls();
 };
 
 var getAuthors = function(data, title){

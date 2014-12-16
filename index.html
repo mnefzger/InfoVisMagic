@@ -1,20 +1,70 @@
 <!DOCTYPE html>
+		<!-- 2014 - 2015 Matthias Nefzger, Daniel Elsner -->
 <html>
 <head>
 	<meta charset=utf-8 />
 	<title>InfoVis</title>
-	<link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+
 	<link href='http://fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
-	<script src="js/jquery-2.1.1.min.js" charset="utf-8"></script>
+	<!--<script src="js/jquery-2.1.1.min.js" charset="utf-8"></script>-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+	<!-- Bootstrap Multiselect -->
+	<link rel="stylesheet" href="js/bootstrap-multiselect/css/bootstrap-multiselect.css" type="text/css">
+	<script type="text/javascript" src="js/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
+
+	<link rel="stylesheet" type="text/css" media="screen" href="style.css" />
 </head>
 <body>
 	<div class="loader">LOADING DATA...</div>
 	<div class="raw_data" style="display:none"></div>
 
-	<div id="container"></div>
+ <!--<div id="sidebar">
+		<h1>Controls</h1>
+		<div class="year_picker"></div>
+
+	</div>-->
+
+
+	<div id="wrapper">
+
+		<!-- Sidebar -->
+		<div id="sidebar-wrapper">
+			<ul class="sidebar-nav">
+				<li class="sidebar-brand">
+
+						<h2>PubDB</h2>
+
+				</li>
+				<li>
+					<h4>Veröffentlichungsjahr</h4>
+					<select id="year_picker" multiple="multiple">
+					</select>
+				</li>
+
+			</ul>
+		</div>
+		<!-- /#sidebar-wrapper -->
+
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+
+				<div id="container"></div>
+
+		</div>
+		<!-- /#page-content-wrapper -->
+
+	</div>
+	<!-- /#wrapper -->
+
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
  	<script src="js/d3.min.js" charset="utf-8"></script>
  	<script src="js/randomColor.js" charset="utf-8"></script>
  	<script src="js/project.js"></script>
+	<script src="js/controls.js"></script>
 	<script src="js/dataRetrieval.js"></script>
 </body>
 </html>
