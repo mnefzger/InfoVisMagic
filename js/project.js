@@ -6,14 +6,14 @@
 	/*var HEIGHT = 800;
 	var WIDTH = 1000;*/
 
-	var pixels = [];	
+	var pixels = [];
 	for(var y=0; y<HEIGHT; y++){
 		pixels[y] = [];
 		for(var x=0; x<WIDTH; x++){
 			pixels[y].push(0);
 		}
 	}
-	
+
 
 	var x_cor = 0;
 	var y_cor = 0;
@@ -21,81 +21,15 @@
 	var item_height;
 
 
-	$(document).ready(function() {
-
-		/*$.ajax({
-			url: "http://www.medien.ifi.lmu.de/cgi-bin/search.pl?all:all:all:all:all",
-		  	success: success
-		});*/
-
-		$.ajax({
-			url: "helper.php",
-		  	success: success
-		});
-
-	 });
-
-	function success(data){
-		content = data;
-
-		$(".loader").hide();
-		$(".raw_data").html(content);
-
-		table = $(".pubdb");
-
-		articles = $(".pubdb tbody tr").each(function() {
-			if($(this).children().length > 1){
-				var title = $(this).children().eq(1).children('b').children('a').text();
-				var info = $(this).children().eq(1).children('i').text();
-
-				var entry = {
-					authors: getAuthors($(this).children().eq(1), title), 
-					title: title,
-					info: info
-				}
-
-				papers.push(entry);
-			}
-		});
-		//console.log(papers);
-		//console.log(authors);
-		makeItHappen();
-	};
-
-	var getAuthors = function(data, title){
-		var allAuthors = data.text().split('\n')[0];
-		var aut = allAuthors.split(',');
-		
-		for(var i=0; i<aut.length; i++){
-			// delete space in front of name
-			if(aut[i].indexOf(' ') == 0){
-				aut[i] = aut[i].substring(1);
-			}
-			// fill in authors array
-			var exists = false;
-			$.each(authors, function(index, obj){
-				if(obj.author == aut[i]){
-					obj.papers.push(title);
-					exists = true;
-					return false;
-				}
-			});
-			if(!exists){
-				authors.push({author: aut[i], papers: [title]});
-			}
-		}
-		return aut;
-	};
-
-	var calcPosition = function(w,h){		
-		outer: 
+	var calcPosition = function(w,h){
+		outer:
 		for(var y=10; y<pixels.length; y++){
 			for(var x=0; x<pixels[y].length; x++){
 				if(pixels[y][x] == 0){
 					x_cor = x;
-					y_cor = y;					
-					setTrue(x,y,w,h);	
-					break outer;			
+					y_cor = y;
+					setTrue(x,y,w,h);
+					break outer;
 				}
 			}
 		}
@@ -121,7 +55,7 @@
 		var data = [];
 		for(i=0;i<authors.length; i++){
 	    	data.push({author: authors[i].author});
-		}  
+		}
 		for(i=0;i<data.length; i++){
 			calcPosition(data[i].author.length*7, 12);
 			data[i]['x'] = getX();
@@ -154,7 +88,7 @@
 	            .transition()
 	            .style( 'fill', 'white' );
 	        } );*/
-		
+
 
 	    items
 			.data(data)
@@ -218,5 +152,98 @@
 			/*.style("font-size", function(d,i){
 				return authors[i].papers.length;
 			});*/
-			    
+
+	}
+
+
+
+
+
+	var width = 400,
+	height = 600,
+	padding = 6, // separation between nodes
+	maxRadius = 20;
+
+	var n = authors.length, // total number of nodes
+	m = 1; // number of distinct clusters
+
+	var color = d3.scale.category10()
+	.domain(d3.range(m));
+
+	var x = d3.scale.ordinal()
+	.domain(d3.range(m))
+	.rangePoints([0, width], 1);
+
+	var nodes = d3.range(n).map(function() {
+		var i = Math.floor(Math.random() * m),
+		v = (i + 1) / m * -Math.log(Math.random());
+		return {
+			radius: Math.sqrt(v) * maxRadius,
+			color: color(i),
+			cx: x(i),
+			cy: height / 2
+		};
+	});
+
+	var force = d3.layout.force()
+	.nodes(nodes)
+	.size([width, height])
+	.gravity(0)
+	.charge(0)
+	.on("tick", tick)
+	.start();
+
+	var svg = d3.select("#container").append("svg")
+	.attr("width", width)
+	.attr("height", height);
+
+	var circle = svg.selectAll("circle")
+	.data(nodes)
+	.enter().append("circle")
+	.attr("r", function(d) { return d.radius; })
+	.style("fill", function(d) { return d.color; })
+	.call(force.drag);
+
+	function tick(e) {
+		circle
+		.each(gravity(.2 * e.alpha))
+		.each(collide(.5))
+		.attr("cx", function(d) { return d.x; })
+		.attr("cy", function(d) { return d.y; });
+	}
+
+	// Move nodes toward cluster focus.
+	function gravity(alpha) {
+		return function(d) {
+			d.y += (d.cy - d.y) * alpha;
+			d.x += (d.cx - d.x) * alpha;
+		};
+	}
+
+	// Resolve collisions between nodes.
+	function collide(alpha) {
+		var quadtree = d3.geom.quadtree(nodes);
+		return function(d) {
+			var r = d.radius + maxRadius + padding,
+			nx1 = d.x - r,
+			nx2 = d.x + r,
+			ny1 = d.y - r,
+			ny2 = d.y + r;
+			quadtree.visit(function(quad, x1, y1, x2, y2) {
+				if (quad.point && (quad.point !== d)) {
+					var x = d.x - quad.point.x,
+					y = d.y - quad.point.y,
+					l = Math.sqrt(x * x + y * y),
+					r = d.radius + quad.point.radius + (d.color !== quad.point.color) * padding;
+					if (l < r) {
+						l = (l - r) / l * alpha;
+						d.x -= x *= l;
+						d.y -= y *= l;
+						quad.point.x += x;
+						quad.point.y += y;
+					}
+				}
+				return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+			});
+		};
 	}
