@@ -11,12 +11,19 @@ function updateYearFilter(){
 
     authors_copy = authors;
 
+
      for(var i=1; i<2; i++){
-       authors_copy[i].papers.filter(isInYears);
+       authors_copy[i].papers = new Array();
+       //authors_copy[i].papers.filter(isInYears);
+       //for(j=0; j<authors[i].papers.length; j++){
+         authors_copy[i].papers.push(authors[i].papers.filter(isInYears));
+       //}
+
      }
 
 
-    console.log("filtered: "+ authors_copy[1].papers.length)
+    console.log("filtered: "+ authors_copy[1].papers.length);
+    console.log(authors_copy[1].papers);
 
     nodes = new Array();
 
@@ -33,9 +40,9 @@ function updateYearFilter(){
 }
 
 
-function isInYears(element) {
-  console.log(element.year);
-  if($.inArray(element.year, selected_years) == -1){
+function isInYears(element, i, array) {
+  if(selected_years.indexOf(element.year) == -1){
+    console.log("!!");
     return false;
   }
   else {
