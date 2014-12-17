@@ -18,22 +18,9 @@ function updateYearFilter(){
          }
      }
 
-
     console.log("filtered: "+ authors_copy[1].papers.length);
-    console.log(authors_copy);
 
-    nodes = new Array();
-
-    for(var j=0; j<authors_copy.length; j++){
-      nodes.push({
-        radius: Math.max(5, authors[j].papers.length),
-        color: 'red',
-        cx: Math.random()*(WIDTH-this.radius),
-        cy: Math.random()*(HEIGHT-this.radius)
-      });
-    }
-
-    force.nodes(nodes).start();
+    // Update instructionen für die Visualisierung......
 }
 
 

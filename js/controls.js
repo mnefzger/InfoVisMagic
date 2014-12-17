@@ -12,13 +12,12 @@ function populateControls(){
       buttonWidth: '180px',
       buttonContainer: '<div class="btn-group year_picker_container" />',
       onChange: function(element, checked) {
-      //  if(checked === true) {
       updateYearFilter();
-      //  }
       },
       allSelectedText: 'Alle ausgewählt',
       nSelectedText: ' Jahre gewählt',
-      nonSelectedText: 'Kein Jahr gewählt'
+      nonSelectedText: 'Kein Jahr gewählt',
+      includeSelectAllOption: true
   });
 
 }
