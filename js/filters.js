@@ -13,14 +13,18 @@ function updateYearFilter(){
 
      for(var i=1; i<authors.length; i++){
          authors_copy[i].papers = authors[i].papers.filter(isInYears);
+         if(authors_copy[i].papers.length == 0){ // delete author from array, if no papers left
+           authors_copy.splice(i,1);
+         }
      }
 
 
     console.log("filtered: "+ authors_copy[1].papers.length);
+    console.log(authors_copy);
 
     nodes = new Array();
 
-    for(var j=0; j<authors.length; j++){
+    for(var j=0; j<authors_copy.length; j++){
       nodes.push({
         radius: Math.max(5, authors[j].papers.length),
         color: 'red',
