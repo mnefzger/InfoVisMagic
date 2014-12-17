@@ -42,7 +42,7 @@ function success(data){
       var info = $(this).children().eq(1).children('i').text();
 
       var entry = {
-        authors: getAuthors($(this).children().eq(1), title),
+        authors: getAuthors($(this).children().eq(1), title, year),
         title: title,
         info: info,
         year: year
@@ -59,7 +59,7 @@ function success(data){
   populateControls();
 };
 
-var getAuthors = function(data, title){
+var getAuthors = function(data, title, year){
   var allAuthors = data.text().split('\n')[0];
   var aut = allAuthors.split(',');
 
@@ -70,15 +70,21 @@ var getAuthors = function(data, title){
     }
     // fill in authors array
     var exists = false;
+
+    paper = {
+      title: title,
+      year: year
+    }
     $.each(authors, function(index, obj){
       if(obj.author == aut[i]){
-        obj.papers.push(title);
+
+        obj.papers.push(paper);
         exists = true;
         return false;
       }
     });
     if(!exists){
-      authors.push({author: aut[i], papers: [title]});
+      authors.push({author: aut[i], papers: [paper]});
     }
   }
   return aut;

@@ -1,6 +1,9 @@
-var display =  function(){	
-	var HEIGHT = 1060;
-	var WIDTH = 1900;
+var nodes;
+var force;
+var HEIGHT = window.innerHeight-5;
+var WIDTH = $("#container").width();
+
+var display =  function(){
 
 	padding = 2,
 	maxRadius = 150; // separation between nodes
@@ -18,10 +21,10 @@ var display =  function(){
 	.attr("width", WIDTH)
 	.attr("height", HEIGHT)
 	.append("g")
-    .call(d3.behavior.zoom().scaleExtent([1, 10]).on("zoom", zoom))
+    .call(d3.behavior.zoom().scaleExtent([-5, 10]).on("zoom", zoom))
   	.append("g");
 
-	var nodes = new Array();
+	nodes = new Array();
 
 	for(var j=0; j<n; j++){
 		nodes.push({
@@ -68,7 +71,7 @@ var display =  function(){
 	  };
 	}
 
-	var force = d3.layout.force()
+	force = d3.layout.force()
     //.gravity(0)
     .charge(-50)
     //.friction(0)
