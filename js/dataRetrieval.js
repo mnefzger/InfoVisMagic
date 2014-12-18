@@ -68,7 +68,7 @@ var getAuthors = function(data, title, year){
     if(aut[i].indexOf(' ') == 0){
       aut[i] = aut[i].substring(1);
     }
-    // fill in authors array
+
     var exists = false;
 
     paper = {
