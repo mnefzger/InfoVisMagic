@@ -1,6 +1,7 @@
 var papers = new Array();
 var authors = new Array();
 var yearsArray = new Array();
+var links = new Array();
 
 $(document).ready(function() {
 
@@ -56,7 +57,7 @@ function success(data){
     $("#loader").text("Failed retrieving data!");
   }
 
-  console.log(authors[0])
+  calcLinks();
 
   display();
   populateControls();
@@ -78,17 +79,45 @@ var getAuthors = function(data, title, year){
       title: title,
       year: year
     }
+
     $.each(authors, function(index, obj){
       if(obj.author == aut[i]){
-
         obj.papers.push(paper);
         exists = true;
         return false;
       }
     });
+
     if(!exists){
       authors.push({author: aut[i], papers: [paper]});
     }
   }
+
+  // return correct array of this paper's authors
   return aut;
 };
+
+// find any connection between authors (co-written papers)
+var calcLinks = function(){
+  for(var i=0; i<authors.length; i++){
+    for(var j=0; j<authors[i].papers.length; j++){
+      var connections = findPaper(authors[i].papers[j].title, i);
+      for(var x=0; x<connections.length; x++){
+        links.push(connections[x]);
+      }
+    }
+  }
+
+  console.log(links[0]);
+}
+
+// find connection of a given paper
+var findPaper = function(paper, index){
+  var connections = new Array();
+  for(var i=0; i<authors.length; i++){
+    for(var j=0; j<authors[i].papers.length; j++){
+      if(i != index && authors[i].papers[j].title == paper) connections.push({source: index, target: i});
+    }
+  }
+  return connections;
+}
