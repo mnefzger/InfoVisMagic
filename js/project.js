@@ -1,6 +1,15 @@
+<<<<<<< HEAD
 var display =  function(){	
 	var HEIGHT = $(window).innerHeight()-5;
 	var WIDTH = $('#container').innerWidth();
+=======
+var nodes;
+var force;
+var HEIGHT = window.innerHeight-5;
+var WIDTH = $("#container").width();
+
+var display =  function(){
+>>>>>>> b0175555be99c7ac2f76ade0e310806991322bd4
 
 	padding = 1; // separation between nodes
 
@@ -9,6 +18,7 @@ var display =  function(){
 
 	//create svg area
 	var svg = d3.select("#container").append("svg")
+<<<<<<< HEAD
 		.attr("width", WIDTH)
 		.attr("height", HEIGHT)
 		.append("g")
@@ -21,8 +31,15 @@ var display =  function(){
 
     //scale data to fit screen
     var linearScale = d3.scale.linear().domain([0,2]);
+=======
+	.attr("width", WIDTH)
+	.attr("height", HEIGHT)
+	.append("g")
+    .call(d3.behavior.zoom().scaleExtent([-5, 10]).on("zoom", zoom))
+  	.append("g");
+>>>>>>> b0175555be99c7ac2f76ade0e310806991322bd4
 
-	var nodes = new Array();
+	nodes = new Array();
 
 	for(var j=0; j<n; j++){
 		nodes.push({
@@ -140,6 +157,7 @@ var display =  function(){
 			d.x += (d.cx - d.x) * alpha;
 		};
 	}
+
 
 	function zoom() {
   		svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");

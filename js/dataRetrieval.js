@@ -11,44 +11,55 @@ $(document).ready(function() {
 
 $.ajax({
   url: "helper.php",
-  success: success
+  success: success, // we always get succes as long as localhost that retrieves the actual Data is online
+  error: failure
 });
 
 });
+
+function failure(){
+  $("#loader").text("Failed retrieving data! Is localhost online?");
+}
 
 function success(data){
 
-  $(".loader").hide();
-  $(".raw_data").html(data);
+  if(data != false){ // data is here!
+    $("#loader").hide();
+    $("#overlay").hide();
+    $(".raw_data").html(data);
 
-  table = $(".pubdb");
-  var year;
+    table = $(".pubdb");
+    var year;
 
-  articles = $(".pubdb tbody tr").each(function() {
-    // set year
-    if($(this).children().length < 2){
-      year = $(this).children('.year_separator').children('b').text();
-      yearsArray.push(year);
-    }
+    articles = $(".pubdb tbody tr").each(function() {
+      // set year
+      if($(this).children().length < 2){
+        year = $(this).children('.year_separator').children('b').text();
+        yearsArray.push(year);
+      }
 
-    var title = $(this).children().eq(1).children('b').children('a').text();
-    var info = $(this).children().eq(1).children('i').text();
+      var title = $(this).children().eq(1).children('b').children('a').text();
+      var info = $(this).children().eq(1).children('i').text();
 
-    var entry = {
-      authors: getAuthors($(this).children().eq(1), title),
-      title: title,
-      info: info,
-      year: year
-    }
+      var entry = {
+        authors: getAuthors($(this).children().eq(1), title, year),
+        title: title,
+        info: info,
+        year: year
+      }
 
-    papers.push(entry);
-  });
+      papers.push(entry);
+    });
+  }
+  else { // error
+    $("#loader").text("Failed retrieving data!");
+  }
 
   display();
   populateControls();
 };
 
-var getAuthors = function(data, title){
+var getAuthors = function(data, title, year){
   var allAuthors = data.text().split('\n')[0];
   var aut = allAuthors.split(',');
 
@@ -57,17 +68,23 @@ var getAuthors = function(data, title){
     if(aut[i].indexOf(' ') == 0){
       aut[i] = aut[i].substring(1);
     }
-    // fill in authors array
+
     var exists = false;
+
+    paper = {
+      title: title,
+      year: year
+    }
     $.each(authors, function(index, obj){
       if(obj.author == aut[i]){
-        obj.papers.push(title);
+
+        obj.papers.push(paper);
         exists = true;
         return false;
       }
     });
     if(!exists){
-      authors.push({author: aut[i], papers: [title]});
+      authors.push({author: aut[i], papers: [paper]});
     }
   }
   return aut;
