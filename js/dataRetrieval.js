@@ -108,7 +108,6 @@ var calcLinks = function(){
     }
   }
 
-  console.log(links[0]);
 }
 
 // find connection of a given paper
