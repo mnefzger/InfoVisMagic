@@ -1,48 +1,113 @@
 var display =  function(){	
-	var HEIGHT = 1060;
-	var WIDTH = 1900;
+	var HEIGHT = $(window).innerHeight()-5;
+	var WIDTH = $('#container').innerWidth();
 
-	padding = 2,
-	maxRadius = 150; // separation between nodes
+	padding = 1; // separation between nodes
 
 	var n = authors.length, // total number of nodes
-	m = 1; // number of distinct clusters
-
-	var getData = function(){
-		return authors;
-	}
-
+	m = 10; // number of distinct clusters
 
 	//create svg area
 	var svg = d3.select("#container").append("svg")
-	.attr("width", WIDTH)
-	.attr("height", HEIGHT)
-	.append("g")
-    .call(d3.behavior.zoom().scaleExtent([1, 10]).on("zoom", zoom))
-  	.append("g");
+		.attr("width", WIDTH)
+		.attr("height", HEIGHT)
+		.append("g")
+    	.call(d3.behavior.zoom().scaleExtent([0.2, 10]).on("zoom", zoom));
+
+    var background = svg.append('rect')
+    	.style('fill','white')
+    	.attr('width', 10000)
+    	.attr('height', 10000);	
+
+    //scale data to fit screen
+    var linearScale = d3.scale.linear().domain([0,2]);
 
 	var nodes = new Array();
 
 	for(var j=0; j<n; j++){
 		nodes.push({
-			radius: Math.max(5, authors[j].papers.length),
+			radius: Math.max(10, linearScale(authors[j].papers.length)),
 			color: 'red',
-			cx: Math.random()*(WIDTH-this.radius),
-			cy: Math.random()*(HEIGHT-this.radius)
+			name: authors[j].author
 		});
 	}
 
-	// Move nodes toward cluster focus.
-	function gravity(alpha) {
-		return function(d) {
-			d.y += (d.cy - d.y) * alpha;
-			d.x += (d.cx - d.x) * alpha;
-		};
-	}
+	 var links = [
+        { source: 0, target: 1},
+        { source: 0, target: 2},
+        { source: 0, target: 3},
+        { source: 2, target: 4},
+        { source: 2, target: 5},
+        { source: 2, target: 6}
+
+    ];
+
+	var force = d3.layout.force()
+    //.gravity(0)
+    .charge(-20)
+    //.theta(100)
+    //.friction(0)
+    .nodes(nodes)
+    .links(links)
+    .size([WIDTH, HEIGHT])
+    .start();
+
+    force.on("tick", function(e) {
+	  	var q = d3.geom.quadtree(nodes),
+	    i = 0;
+	  	while (++i < n) {
+	    		q.visit(collide(nodes[i]));
+	  	}
+	  	svg.selectAll("circle")
+	      	.attr("cx", function(d) { return d.x; })
+	      	.attr("cy", function(d) { return d.y; });
+	    svg.selectAll('line')
+	    	.attr("x1", function(d) { return d.source.x; })
+      		.attr("y1", function(d) { return d.source.y; })
+      		.attr("x2", function(d) { return d.target.x; })
+      		.attr("y2", function(d) { return d.target.y; });
+	});
+
+	var links = svg.selectAll('link')
+        .data(links)
+        .enter().append('line')
+        .attr('x1', function(d) { return d.source.x })
+        .attr('y1', function(d) { return d.source.y; })
+        .attr('x2', function(d) { return d.target.x; })
+        .attr('y2', function(d) { return d.target.y; })
+        .style('stroke', '#aaa')
+        .style('stroke-width', 1);
+
+	var circle = svg.selectAll('circle')
+		.data(nodes)
+		.enter().append('circle')
+		.style("fill", function(d){
+			return randomColor({
+   				luminosity: 'light',
+   				hue: 'blue'
+			});
+		})
+		.attr('r', function(d){
+			return d.radius;
+		})
+		.on('click', function(){
+			d3.select(this)
+				.transition()
+				.duration(1500)
+				.attr("transform", "translate(200,0)")
+				.fixed = true;
+			var elem = d3.mouse(this);
+			force.size([elem[0], elem[1]]);
+			this.fixed  = true;
+			force.resume();
+		})
+		.call(force.drag);
+
+	
 
 	// Resolve collisions between nodes.
 	function collide(node) {
-	  var r = node.radius + padding,
+	  var r = node.radius,
 	      nx1 = node.x - r,
 	      nx2 = node.x + r,
 	      ny1 = node.y - r,
@@ -68,36 +133,13 @@ var display =  function(){
 	  };
 	}
 
-	var force = d3.layout.force()
-    //.gravity(0)
-    .charge(-50)
-    //.friction(0)
-    .nodes(nodes)
-    .size([WIDTH, HEIGHT])
-    .start();
-
-    force.on("tick", function(e) {
-	  	var q = d3.geom.quadtree(nodes),
-	    i = 0,
-	    n = nodes.length;
-	  	while (++i < n) {
-	    		q.visit(collide(nodes[i]));
-	  	}
-	  	svg.selectAll("circle")
-	      .attr("cx", function(d) { return d.x; })
-	      .attr("cy", function(d) { return d.y; });
-	});
-
-	var circle = svg.selectAll('circle')
-		.data(nodes)
-		.enter().append('circle')
-		.style("fill", function(d){
-			return randomColor();
-		})
-		.attr('r', function(d){
-			return d.radius;
-		})
-		.call(force.drag);
+	// Move nodes toward cluster focus.
+	function gravity(alpha) {
+		return function(d) {
+			d.y += (d.cy - d.y) * alpha;
+			d.x += (d.cx - d.x) * alpha;
+		};
+	}
 
 	function zoom() {
   		svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
