@@ -3,6 +3,11 @@ var force;
 var HEIGHT = window.innerHeight-5;
 var WIDTH = $("#container").width();
 
+var linearScale;
+var circle;
+var force;
+var svg;
+
 var display =  function(){
 	padding = 1; // separation between nodes
 
@@ -10,7 +15,7 @@ var display =  function(){
 	m = 10; // number of distinct clusters
 
 	//create svg area
-	var svg = d3.select("#container").append("svg")
+	svg = d3.select("#container").append("svg")
 		.attr("width", WIDTH)
 		.attr("height", HEIGHT)
 		.append("g")
@@ -19,14 +24,12 @@ var display =  function(){
     var background = svg.append('rect')
     	.style('fill','white')
     	.attr('width', 10000)
-    	.attr('height', 10000);	
+    	.attr('height', 10000);
 
     //scale data to fit screen
-    var linearScale = d3.scale.linear().domain([0,2]);
+    linearScale = d3.scale.linear().domain([0,2]);
 
-    links = [];
 	nodes = new Array();
-
 	for(var j=0; j<n; j++){
 		nodes.push({
 			radius: Math.max(10, linearScale(authors[j].papers.length)),
@@ -36,7 +39,10 @@ var display =  function(){
 		});
 	}
 
-	var force = d3.layout.force()
+    var links = [
+    ];
+
+	force = d3.layout.force()
     //.gravity(0)
     .charge(-20)
     //.theta(100)
@@ -74,7 +80,7 @@ var display =  function(){
         .style('stroke', '#aaa')
         .style('stroke-width', 1);
 
-	var circle = svg.selectAll('circle')
+	circle = svg.selectAll('circle')
 		.data(nodes)
 		.enter().append('circle')
 		.style("fill", function(d){
@@ -100,7 +106,7 @@ var display =  function(){
 		})
 		.call(force.drag);
 
-	
+
 
 	// Resolve collisions between nodes.
 	function collide(node) {

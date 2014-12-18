@@ -1,7 +1,8 @@
 var selected_years = yearsArray; // instantiate with all years selected.
+var authors_copy = new Array();
 
 function updateYearFilter(){
-   var authors_copy = new Array();
+
 
    selected_years = new Array(); // empty array
     $('#year_picker option:selected').each(function() {
@@ -15,9 +16,23 @@ function updateYearFilter(){
         authors_copy[i].papers = authors_copy[i].papers.filter(isInYears);
     }
 
-    var authors_copy = authors_copy.filter(isEmpty);
+    authors_copy = authors_copy.filter(isEmpty);
 
     // Update instructionen für die Visualisierung......
+    nodes = new Array();
+    for(var i=0; i<authors_copy.length; i++){
+      nodes.push({
+        radius: Math.max(10, linearScale(authors_copy[i].papers.length)),
+        color: 'red',
+        name: authors_copy[i].author
+      });
+    }
+
+    force.charge(-20)
+    .nodes(nodes)
+    .links(links)
+    .size([WIDTH, HEIGHT]);
+    updateForceField();
 }
 
 function isEmpty(element){
@@ -33,4 +48,36 @@ function isInYears(element, i, array) {
   else {
     return true;
   }
+}
+
+function updateForceField(){
+  circle = circle.data(force.nodes());
+
+  // circle.enter().append('circle')
+  // .style("fill", function(d){
+  //   return randomColor({
+  //     luminosity: 'light',
+  //     hue: 'blue'
+  //   });
+  // })
+  // .attr('r', function(d){
+  //   return d.radius;
+  // })
+  // .on('click', function(){
+  //   d3.select(this)
+  //   .transition()
+  //   .duration(1500)
+  //   .attr("transform", "translate(200,0)")
+  //   .fixed = true;
+  //   var elem = d3.mouse(this);
+  //   force.size([elem[0], elem[1]]);
+  //   this.fixed  = true;
+  //   force.start();
+  // })
+  // .call(force.drag);
+  //
+  // circle.exit().remove();
+  //
+  // force.start();
+
 }
