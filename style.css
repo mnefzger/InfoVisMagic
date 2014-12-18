@@ -146,6 +146,20 @@ body{
 		position: relative;
 		margin-right: 0;
 	}
+}
 
+circle:hover{
+	border: 1px solid #000;
+}
 
+#tooltip{
+	width: 400px;
+	height: 150px;
+	background-color: #556270;
+	position: absolute;
+	right:25px;
+	bottom: 25px;
+	color: white;
+	padding: 25px;
+	opacity: 0.75;
 }

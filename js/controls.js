@@ -21,3 +21,10 @@ function populateControls(){
   });
 
 }
+
+
+// opens a tooltip on mouseover
+function showDetailsTooltip(node, index){
+  $('#author').text(node.name);
+  $('#papers').text("Anzahl Paper: " + node.paperCount);
+}

@@ -24,25 +24,17 @@ var display =  function(){
     //scale data to fit screen
     var linearScale = d3.scale.linear().domain([0,2]);
 
+    links = [];
 	nodes = new Array();
 
 	for(var j=0; j<n; j++){
 		nodes.push({
 			radius: Math.max(10, linearScale(authors[j].papers.length)),
 			color: 'red',
-			name: authors[j].author
+			name: authors[j].author,
+			paperCount: authors[j].papers.length
 		});
 	}
-
-	 var links = [
-        { source: 0, target: 1},
-        { source: 0, target: 2},
-        { source: 0, target: 3},
-        { source: 2, target: 4},
-        { source: 2, target: 5},
-        { source: 2, target: 6}
-
-    ];
 
 	var force = d3.layout.force()
     //.gravity(0)
@@ -51,6 +43,8 @@ var display =  function(){
     //.friction(0)
     .nodes(nodes)
     .links(links)
+    .linkStrength(1)
+    .linkDistance(10)
     .size([WIDTH, HEIGHT])
     .start();
 
@@ -70,7 +64,7 @@ var display =  function(){
       		.attr("y2", function(d) { return d.target.y; });
 	});
 
-	var links = svg.selectAll('link')
+	var d3Links = svg.selectAll('link')
         .data(links)
         .enter().append('line')
         .attr('x1', function(d) { return d.source.x })
@@ -92,16 +86,17 @@ var display =  function(){
 		.attr('r', function(d){
 			return d.radius;
 		})
-		.on('click', function(){
+		.on('click', function(d,i){
+
+		})
+		.on('mouseover', function(d,i){
 			d3.select(this)
-				.transition()
-				.duration(1500)
-				.attr("transform", "translate(200,0)")
-				.fixed = true;
-			var elem = d3.mouse(this);
-			force.size([elem[0], elem[1]]);
-			this.fixed  = true;
-			force.start();
+				.style('stroke', 'red');
+			showDetailsTooltip(d,i);
+		})
+		.on('mouseleave', function(d,i){
+			d3.select(this)
+				.style('stroke', '');
 		})
 		.call(force.drag);
 
