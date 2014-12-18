@@ -12,7 +12,7 @@ function populateControls(){
       buttonWidth: '180px',
       buttonContainer: '<div class="btn-group year_picker_container" />',
       onChange: function(element, checked) {
-      updateYearFilter();
+        updateYearFilter();
       },
       allSelectedText: 'Alle ausgewählt',
       nSelectedText: ' Jahre gewählt',

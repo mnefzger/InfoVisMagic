@@ -101,7 +101,7 @@ var display =  function(){
 			var elem = d3.mouse(this);
 			force.size([elem[0], elem[1]]);
 			this.fixed  = true;
-			force.resume();
+			force.start();
 		})
 		.call(force.drag);
 

@@ -36,24 +36,27 @@ function success(data){
       if($(this).children().length < 2){
         year = $(this).children('.year_separator').children('b').text();
         yearsArray.push(year);
+      } else {
+
+        var title = $(this).children().eq(1).children('b').children('a').text();
+        var info = $(this).children().eq(1).children('i').text();
+
+        var entry = {
+          authors: getAuthors($(this).children().eq(1), title, year),
+          title: title,
+          info: info,
+          year: year
+        }
+
+        papers.push(entry);
       }
-
-      var title = $(this).children().eq(1).children('b').children('a').text();
-      var info = $(this).children().eq(1).children('i').text();
-
-      var entry = {
-        authors: getAuthors($(this).children().eq(1), title, year),
-        title: title,
-        info: info,
-        year: year
-      }
-
-      papers.push(entry);
     });
   }
   else { // error
     $("#loader").text("Failed retrieving data!");
   }
+
+  console.log(authors[0])
 
   display();
   populateControls();
