@@ -22,9 +22,9 @@ function updateYearFilter(){
     nodes = new Array();
     for(var i=0; i<authors_copy.length; i++){
       nodes.push({
-        radius: Math.max(10, linearScale(authors_copy[i].papers.length)),
-        color: 'red',
-        name: authors_copy[i].author
+          name: authors_copy[i].author,
+          size: Math.max(1, linearScale(authors_copy[i].papers.length)),
+          paperCount: authors_copy[i].papers.length
       });
     }
 

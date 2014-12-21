@@ -35,8 +35,6 @@ var display =  function(){
 		nodes.push({
 			name: authors[j].author,
 			size: Math.max(1, linearScale(authors[j].papers.length)),
-			//value: Math.max(10, linearScale(authors[j].papers.length)),
-			//name: authors[j].author,
 			paperCount: authors[j].papers.length
 		});
 	}
@@ -60,8 +58,7 @@ var display =  function(){
 }
 
 function drawCircles (json){
-	console.log(json.children.length);
-
+	refreshSvg();
 
 	var node = svg.selectAll(".node")
 	    .data(bubble.nodes(classes(json))
@@ -101,4 +98,8 @@ function drawCircles (json){
 	  recurse(null, root);
 	  return {children: classes};
 	}
+}
+
+function refreshSvg(){
+	svg.selectAll("circle").remove();
 }
