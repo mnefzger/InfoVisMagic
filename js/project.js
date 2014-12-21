@@ -67,12 +67,8 @@ function drawCircles (json){
 	node.enter().append("circle")
 	    .attr("transform", function(d,i) { return "translate(" + d.x  + "," + d.y + ")"; })
 	    .attr("r", function(d) { return 0; })
-	    .style("fill", function(d) { 
-	    	return randomColor({
-   				luminosity: 'light',
-   				hue: 'blue'
-			})
-		})
+	    .style("fill", 'blue')
+	    .style("stroke-width",2)
 	    .on('mouseover', function(d,i){
 			d3.select(this)
 				.style('stroke', 'red');
@@ -82,10 +78,25 @@ function drawCircles (json){
 			d3.select(this)
 				.style('stroke', '');
 		})
+		.on('click', function(d,i){
+			d3.select(this)
+			.moveToFront()
+			.transition()
+        	.duration(500)
+        	.attr("r", function(d) { return 250; })
+        	.style("stroke", '#000');
+        	
+		})
         .transition()
         .duration(500)
-        .delay(function(d,i){return Math.random()*1500})
-        .attr("r", function(d) { return d.r; });	
+        .delay(function(d,i){return Math.random()*1000})
+        .attr("r", function(d) { return d.r; })
+        .style("fill", function(d) { 
+	    	return randomColor({
+   				luminosity: 'light',
+   				hue: 'blue'
+			})
+		});	
 
 	function classes(root) {
 	  var classes = [];
@@ -99,6 +110,21 @@ function drawCircles (json){
 	  return {children: classes};
 	}
 }
+
+d3.selection.prototype.moveToFront = function() {
+  return this.each(function(){
+    this.parentNode.appendChild(this);
+  });
+};
+
+d3.selection.prototype.moveToBack = function() { 
+    return this.each(function() { 
+        var firstChild = this.parentNode.firstChild; 
+        if (firstChild) { 
+            this.parentNode.insertBefore(this, firstChild); 
+        } 
+    }); 
+};
 
 function refreshSvg(){
 	svg.selectAll("circle").remove();

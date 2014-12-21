@@ -148,13 +148,9 @@ body{
 	}
 }
 
-circle:hover{
-	border: 1px solid #000;
-}
-
 #tooltip{
 	width: 400px;
-	height: 150px;
+	height: 200px;
 	background-color: #556270;
 	position: absolute;
 	right:25px;
@@ -163,3 +159,15 @@ circle:hover{
 	padding: 25px;
 	opacity: 0.75;
 }
+
+.info{
+	float: left;
+}
+
+#author_img{
+	position: absolute;
+	right: 25px;
+	width: 100px;
+}
+
+

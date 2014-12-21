@@ -27,4 +27,5 @@ function populateControls(){
 function showDetailsTooltip(node, index){
   $('#author').text(node.name);
   $('#papers').text("Anzahl Paper: " + node.paperCount);
+  $('#author_img').attr('src','./img/'+node.name+'.jpg');
 }
