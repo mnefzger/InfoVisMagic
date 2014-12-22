@@ -30,7 +30,7 @@ function showDetailsTooltip(node, index){
 
   $("#tooltip").fadeIn(200);
   $("#tooltip").css("position", "absolute");
-  $("#tooltip").css("top", node.y + 20);
+  $("#tooltip").css("top", node.y + 50);
   $("#tooltip").css("left", node.x);
   $('#author').text(node.name);
   $('#papers').text("Anzahl Paper: " + node.paperCount);

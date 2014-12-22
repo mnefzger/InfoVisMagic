@@ -9,10 +9,7 @@ var bubble;
 var svg;
 
 var display =  function(){
-	padding = 1; // separation between nodes
-
-	var n = authors.length, // total number of nodes
-	m = 10; // number of distinct clusters
+	var n = authors.length;
 
 	//create svg area
 	svg = d3.select("#container").append("svg")
@@ -40,12 +37,14 @@ var display =  function(){
 	}
 
 	var	data = {
-    		"name":"root",
+    		"name":"root", 
 			"children": nodes
 			};
 
    bubble = d3.layout.pack()
-    .sort(null)
+    .sort(function(a,b){
+    	return b.value-a.value;
+    })
     .size([WIDTH, HEIGHT])
     .padding(1.5);
 
@@ -71,10 +70,10 @@ function drawCircles (json){
 	    .attr("r", function(d) { return 0; })
 
 	    .style("fill", 'blue')
-	    .style("stroke-width",2)
+	    .style("stroke-width",4)
 	    .on('mouseover', function(d,i){
 			d3.select(this)
-				.style('stroke', 'red');
+				.style('stroke', 'blue');
 			showDetailsTooltip(d,i);
 		})
 		.on('mouseleave', function(d,i){
@@ -99,7 +98,7 @@ function drawCircles (json){
 		})
         .transition()
         .duration(500)
-        .delay(function(d,i){return Math.random()*1000})
+        .delay(function(d,i){return d.r})
         .attr("r", function(d) { return d.r; })
         .style("fill", function(d) {
 	    	return randomColor({
