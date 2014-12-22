@@ -65,6 +65,7 @@ function drawCircles (json){
 
 
   details_showing = false;
+	current_name = "";
 	node.enter().append("circle")
 	    .attr("transform", function(d,i) { return "translate(" + d.x  + "," + d.y + ")"; })
 	    .attr("r", function(d) { return 0; })
@@ -82,19 +83,17 @@ function drawCircles (json){
 				hideDetailsTooltip(d,i);
 		})
 		.on('click', function(d,i){
-			d3.select(this);
-			if(details_showing){
+			//d3.select(this);
+			// show/hide slide in Panel
+			if(details_showing == true && d.name == current_name){
+				details_showing = false;
 				hideDetailsPane();
 			}
 			else{
+				current_name = d.name;
+				details_showing = true;
 				showDetailsPane();
 			}
-			//.moveToFront()
-			/*.transition()
-        	.duration(500)
-        	.attr("r", function(d) { return 250; })
-        	.style("stroke", '#000');*/
-
 		})
         .transition()
         .duration(500)
