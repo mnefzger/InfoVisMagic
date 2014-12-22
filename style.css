@@ -22,6 +22,17 @@ body{
 circle { cursor: pointer; }
 
 
+#slideInPanel {
+height: 100vh;
+width: 250px;
+position: absolute;
+top: 0;
+right: 0;
+background: rgba(100,100,100,0.8);
+display: none;
+}
+
+
 /*----------------------------------------------------------------------------------------*/
 /*!
 * Start Bootstrap - Simple Sidebar HTML Template (http://startbootstrap.com)

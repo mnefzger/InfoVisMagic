@@ -64,6 +64,8 @@ function drawCircles (json){
 	    .data(bubble.nodes(classes(json))
 	    	  .filter(function(d) { return !d.children; }));
 
+
+  details_showing = false;
 	node.enter().append("circle")
 	    .attr("transform", function(d,i) { return "translate(" + d.x  + "," + d.y + ")"; })
 	    .attr("r", function(d) { return 0; })
@@ -81,7 +83,13 @@ function drawCircles (json){
 				hideDetailsTooltip(d,i);
 		})
 		.on('click', function(d,i){
-			d3.select(this)
+			d3.select(this);
+			if(details_showing){
+				hideDetailsPane();
+			}
+			else{
+				showDetailsPane();
+			}
 			//.moveToFront()
 			/*.transition()
         	.duration(500)

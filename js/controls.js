@@ -41,3 +41,13 @@ function hideDetailsTooltip(node, index){
     $("#tooltip").fadeOut(200);
   }, 70);
 }
+
+
+//show Details Pane
+function showDetailsPane(){
+  $("#slideInPanel").animate({width:'toggle'},150);
+}
+
+function hideDetailsPane(){
+  $("#slideInPanel").animate({width:'toggle'},150);
+}
