@@ -61,6 +61,8 @@ function success(data){
 
   display();
   populateControls();
+
+
 };
 
 var getAuthors = function(data, title, year){

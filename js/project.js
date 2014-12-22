@@ -29,7 +29,7 @@ var display =  function(){
     //scale data to fit screen
     linearScale = d3.scale.linear().domain([0,2]);
 
-    
+
 	nodes = new Array();
 	for(var j=0; j<n; j++){
 		nodes.push({
@@ -41,7 +41,7 @@ var display =  function(){
 
 	var	data = {
     		"name":"root",
-			"children": nodes 
+			"children": nodes
 			};
 
    bubble = d3.layout.pack()
@@ -49,7 +49,7 @@ var display =  function(){
     .size([WIDTH, HEIGHT])
     .padding(1.5);
 
-	drawCircles(data);	
+	drawCircles(data);
 
 	function zoom() {
   		svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
@@ -67,6 +67,7 @@ function drawCircles (json){
 	node.enter().append("circle")
 	    .attr("transform", function(d,i) { return "translate(" + d.x  + "," + d.y + ")"; })
 	    .attr("r", function(d) { return 0; })
+
 	    .style("fill", 'blue')
 	    .style("stroke-width",2)
 	    .on('mouseover', function(d,i){
@@ -77,26 +78,27 @@ function drawCircles (json){
 		.on('mouseleave', function(d,i){
 			d3.select(this)
 				.style('stroke', '');
+				hideDetailsTooltip(d,i);
 		})
 		.on('click', function(d,i){
 			d3.select(this)
-			.moveToFront()
-			.transition()
+			//.moveToFront()
+			/*.transition()
         	.duration(500)
         	.attr("r", function(d) { return 250; })
-        	.style("stroke", '#000');
-        	
+        	.style("stroke", '#000');*/
+
 		})
         .transition()
         .duration(500)
         .delay(function(d,i){return Math.random()*1000})
         .attr("r", function(d) { return d.r; })
-        .style("fill", function(d) { 
+        .style("fill", function(d) {
 	    	return randomColor({
    				luminosity: 'light',
    				hue: 'blue'
 			})
-		});	
+		});
 
 	function classes(root) {
 	  var classes = [];
@@ -117,13 +119,13 @@ d3.selection.prototype.moveToFront = function() {
   });
 };
 
-d3.selection.prototype.moveToBack = function() { 
-    return this.each(function() { 
-        var firstChild = this.parentNode.firstChild; 
-        if (firstChild) { 
-            this.parentNode.insertBefore(this, firstChild); 
-        } 
-    }); 
+d3.selection.prototype.moveToBack = function() {
+    return this.each(function() {
+        var firstChild = this.parentNode.firstChild;
+        if (firstChild) {
+            this.parentNode.insertBefore(this, firstChild);
+        }
+    });
 };
 
 function refreshSvg(){

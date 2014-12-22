@@ -23,9 +23,21 @@ function populateControls(){
 }
 
 
+var tooltip_timeout;
 // opens a tooltip on mouseover
 function showDetailsTooltip(node, index){
+  clearTimeout(tooltip_timeout);
+
+  $("#tooltip").fadeIn(200);
+  $("#tooltip").css("position", "absolute");
+  $("#tooltip").css("top", node.y + 20);
+  $("#tooltip").css("left", node.x);
   $('#author').text(node.name);
   $('#papers').text("Anzahl Paper: " + node.paperCount);
   $('#author_img').attr('src','./img/'+node.name+'.jpg');
+}
+function hideDetailsTooltip(node, index){
+  tooltip_timeout = setTimeout(function(){
+    $("#tooltip").fadeOut(200);
+  }, 70);
 }

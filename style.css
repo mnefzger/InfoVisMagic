@@ -19,7 +19,7 @@ body{
 .year_picker_container { margin-left: 20px; }
 
 
-
+circle { cursor: pointer; }
 
 
 /*----------------------------------------------------------------------------------------*/
@@ -150,14 +150,12 @@ body{
 
 #tooltip{
 	width: 400px;
-	height: 200px;
-	background-color: #556270;
+	height: 150px;
+	background-color: rgba(100, 100, 100, 0.8);
 	position: absolute;
-	right:25px;
-	bottom: 25px;
 	color: white;
 	padding: 25px;
-	opacity: 0.75;
+	display: none;
 }
 
 .info{
@@ -167,7 +165,5 @@ body{
 #author_img{
 	position: absolute;
 	right: 25px;
-	width: 100px;
+	width: 80px;
 }
-
-
