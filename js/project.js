@@ -65,7 +65,7 @@ function drawCircles (json){
 
 
   details_showing = false;
-	node.enter().append("circle")
+	/*node.enter().append("circle")
 	    .attr("transform", function(d,i) { return "translate(" + d.x  + "," + d.y + ")"; })
 	    .attr("r", function(d) { return 0; })
 
@@ -90,10 +90,10 @@ function drawCircles (json){
 				showDetailsPane();
 			}
 			//.moveToFront()
-			/*.transition()
+			.transition()
         	.duration(500)
         	.attr("r", function(d) { return 250; })
-        	.style("stroke", '#000');*/
+        	.style("stroke", '#000');
 
 		})
         .transition()
@@ -105,7 +105,17 @@ function drawCircles (json){
    				luminosity: 'light',
    				hue: 'blue'
 			})
-		});
+		});*/
+	console.log(links);
+	var d3Links = svg.selectAll('link')
+        .data(links)
+        .enter().append('line')
+        .attr('x1', function(d) { return d.source.x })
+        .attr('y1', function(d) { return d.source.y; })
+        .attr('x2', function(d) { return d.target.x; })
+        .attr('y2', function(d) { return d.target.y; })
+        .style('stroke', '#000')
+        .style('stroke-width', 1);
 
 	function classes(root) {
 	  var classes = [];
