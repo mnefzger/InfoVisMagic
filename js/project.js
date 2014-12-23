@@ -38,7 +38,7 @@ var display =  function(){
 	}
 
 	var	data = {
-    		"name":"root", 
+    		"name":"root",
 			"children": nodes
 			};
 
@@ -69,7 +69,7 @@ function drawCircles (json){
 	current_name = "";
 	node.enter().append("circle")
 	    .attr("transform", function(d,i) { return "translate(" + d.x  + "," + d.y + ")"; })
-	    .attr("r", function(d) { return 0; }) 
+	    .attr("r", function(d) { return 0; })
 		.style("fill", 'blue')
 		.style("stroke-width",4)
 		.on('mouseover', function(d,i){
@@ -91,7 +91,7 @@ function drawCircles (json){
 			else{
 				current_name = d.name;
 				details_showing = true;
-				showDetailsPane();
+				showDetailsPane(d,i);
 			}
 			showLinks(i);
 		})
@@ -125,9 +125,9 @@ function drawCircles (json){
 	        .attr('x2', function(d,i) { return node[0][d.target].transform.animVal[0].matrix.e; })
 	        .attr('y2', function(d,i) { return node[0][d.target].transform.animVal[0].matrix.f; })
 	        .style('stroke', '#000')
-	        .style('stroke-width', 1); 
-    }    
-	
+	        .style('stroke-width', 1);
+    }
+
 
 	function classes(root) {
 	  var classes = [];
