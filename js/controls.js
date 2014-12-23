@@ -45,11 +45,9 @@ function hideDetailsTooltip(node, index){
 
 //show Details Pane
 function showDetailsPane(){
-  console.log("show");
-  $("#slideInPanel").animate({width:'250px'},150);
+  $("#slideInPanel").animate({width:'toggle'},150);
 }
 
 function hideDetailsPane(){
-  console.log("hide");
-    $("#slideInPanel").animate({width:'0px'},150);
+  $("#slideInPanel").animate({width:'toggle'},150);
 }
