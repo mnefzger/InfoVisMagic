@@ -30,12 +30,13 @@ function showDetailsTooltip(node, index){
 
   $("#tooltip").fadeIn(200);
   $("#tooltip").css("position", "absolute");
-  $("#tooltip").css("top", node.y + 20);
+  $("#tooltip").css("top", node.y + 50);
   $("#tooltip").css("left", node.x);
   $('#author').text(node.name);
   $('#papers').text("Anzahl Paper: " + node.paperCount);
   $('#author_img').attr('src','./img/'+node.name+'.jpg');
 }
+
 function hideDetailsTooltip(node, index){
   tooltip_timeout = setTimeout(function(){
     $("#tooltip").fadeOut(200);
@@ -47,8 +48,11 @@ function hideDetailsTooltip(node, index){
 function showDetailsPane(node, index){
 
  console.log(authors[1].papers);
+ $("#slideInPanel").html('');
 
-  $("#slideInPanel").append("<div id='siderBar_papersContainer'></div>")
+ $("#slideInPanel").append("<h3 id='author_name'>" + authors[index].author + "</h3>");
+ $("#slideInPanel").append("<div id='siderBar_papersContainer'></div>");
+  
 
   for(i=0; i<authors[index].papers.length; i++){
     $("#siderBar_papersContainer").append(
