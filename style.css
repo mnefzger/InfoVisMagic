@@ -206,12 +206,12 @@ background: rgba(52,56,56,0.8);
 
 .triangle{
 	position: absolute;
-	top: -32px;
-	left: 225px;
+	top: -64px;
+	left: 235px;
 	width: 0;
 	height: 0;
 	border-style: solid;
-	border-width: 0 25px 32px 25px;
+	border-width: 0 15px 64px 15px;
 	border-color: transparent transparent rgba(100, 100, 100, 0.9) transparent;
 }
 

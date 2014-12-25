@@ -116,16 +116,20 @@ function drawCircles (json){
     		if(element.source != index)   return false;
 			else return true;
     	});
-    	console.log(links_copy);
+
     	var d3Links = svg.selectAll('link')
 	        .data(links_copy)
 	        .enter().append('line')
 	        .attr('x1', function(d,i) { return node[0][d.source].transform.animVal[0].matrix.e; })
 	        .attr('y1', function(d,i) { return node[0][d.source].transform.animVal[0].matrix.f; })
-	        .attr('x2', function(d,i) { return node[0][d.target].transform.animVal[0].matrix.e; })
-	        .attr('y2', function(d,i) { return node[0][d.target].transform.animVal[0].matrix.f; })
+	        .attr('x2', function(d,i) { return node[0][d.source].transform.animVal[0].matrix.e; })
+	        .attr('y2', function(d,i) { return node[0][d.source].transform.animVal[0].matrix.f; })
 	        .style('stroke', '#000')
-	        .style('stroke-width', 1);
+	        .style('stroke-width', 1)
+	        .transition()
+	    	.duration(500)
+	    	.attr('x2', function(d,i) { return node[0][d.target].transform.animVal[0].matrix.e; })
+	        .attr('y2', function(d,i) { return node[0][d.target].transform.animVal[0].matrix.f; });
     }
 
 

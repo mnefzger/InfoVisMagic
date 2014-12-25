@@ -57,7 +57,10 @@ function success(data){
     $("#loader").text("Failed retrieving data!");
   }
 
-  calcLinks();
+  //make the copy avaiable from start
+  authors_copy = authors;
+
+  calcLinks(authors);
 
   display();
   populateControls();
@@ -100,23 +103,26 @@ var getAuthors = function(data, title, year){
 };
 
 // find any connection between authors (co-written papers)
-var calcLinks = function(){
-  for(var i=0; i<authors.length; i++){
-    for(var j=0; j<authors[i].papers.length; j++){
-      var connections = findPaper(authors[i].papers[j].title, i);
+// takes any authors array as param
+var calcLinks = function(array){
+  links = new Array();
+  for(var i=0; i<array.length; i++){
+    for(var j=0; j<array[i].papers.length; j++){
+      var connections = findPaper(array[i].papers[j].title, i, array);
       for(var x=0; x<connections.length; x++){
         links.push(connections[x]);
       }
     }
   }
+  console.log(links);
 }
 
 // find connection of a given paper
-var findPaper = function(paper, index){
+var findPaper = function(paper, index, array){
   var connections = new Array();
-  for(var i=0; i<authors.length; i++){
-    for(var j=0; j<authors[i].papers.length; j++){
-      if(i != index && authors[i].papers[j].title == paper) connections.push({source: index, target: i});
+  for(var i=0; i<array.length; i++){
+    for(var j=0; j<array[i].papers.length; j++){
+      if(i != index && array[i].papers[j].title == paper) connections.push({source: index, target: i});
     }
   }
   return connections;

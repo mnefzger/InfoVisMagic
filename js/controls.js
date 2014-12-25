@@ -30,7 +30,7 @@ function showDetailsTooltip(node, index){
 
   $("#tooltip").fadeIn(200);
   $("#tooltip").css("position", "absolute");
-  $("#tooltip").css("top", node.y + 50);
+  $("#tooltip").css("top", node.y + 100);
   $("#tooltip").css("left", node.x);
   $('#author').text(node.name);
   $('#papers').text("Anzahl Paper: " + node.paperCount);
@@ -47,18 +47,17 @@ function hideDetailsTooltip(node, index){
 //show Details Pane
 function showDetailsPane(node, index){
 
- console.log(authors[1].papers);
  $("#slideInPanel").html('');
 
- $("#slideInPanel").append("<h3 id='author_name'>" + authors[index].author + "</h3>");
+ $("#slideInPanel").append("<h3 id='author_name'>" + authors_copy[index].author + "</h3>");
  $("#slideInPanel").append("<div id='siderBar_papersContainer'></div>");
   
 
-  for(i=0; i<authors[index].papers.length; i++){
+  for(i=0; i<authors_copy[index].papers.length; i++){
     $("#siderBar_papersContainer").append(
       "<div class='paperContainer'>"
       + "<a href='#'>"
-      +   authors[index].papers[i].title
+      +   authors_copy[index].papers[i].title
       + "</a>"
       +"</div>"
     );

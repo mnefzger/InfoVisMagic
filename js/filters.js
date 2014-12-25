@@ -35,6 +35,8 @@ function updateYearFilter(){
 
     drawCircles(json);
 
+    calcLinks(authors_copy);
+
 
 }
 
