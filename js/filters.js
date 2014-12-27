@@ -24,7 +24,8 @@ function updateYearFilter(){
       nodes.push({
           name: authors_copy[i].author,
           size: Math.max(1, linearScale(authors_copy[i].papers.length)),
-          paperCount: authors_copy[i].papers.length
+          paperCount: authors_copy[i].papers.length,
+          color: randomColor({luminosity: 'light', hue: 'blue'})
       });
     }
 

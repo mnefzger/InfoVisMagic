@@ -20,6 +20,13 @@ function populateControls(){
       includeSelectAllOption: true
   });
 
+  $('#author_picker').keypress(function(event) {
+    if ( event.which == 13 ) {
+      event.preventDefault();
+      pickAuthor($(this).val());
+    }
+  });  
+
 }
 
 

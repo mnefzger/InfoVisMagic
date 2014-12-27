@@ -26,7 +26,9 @@ var display =  function(){
     	.attr('height', 10000)
     	.on('click', function(){
     		svg.selectAll("line").remove();
-    		d3.selectAll('circle').attr('opacity',1);
+    		d3.selectAll('circle')
+    			.attr('opacity',1)
+    			.attr('r', function(d){return d.r});
     		details_showing = false;
 			hideDetailsPane();
     	});
@@ -40,7 +42,8 @@ var display =  function(){
 		nodes.push({
 			name: authors[j].author,
 			size: Math.max(1, linearScale(authors[j].papers.length)),
-			paperCount: authors[j].papers.length
+			paperCount: authors[j].papers.length,
+			color: randomColor({luminosity: 'light', hue: 'blue'})
 		});
 	}
 
@@ -54,7 +57,7 @@ var display =  function(){
     	return b.value-a.value;
     })
     .size([WIDTH-300, HEIGHT])
-    .padding(1.5);
+    .padding(10);
 
 	drawCircles(data);
 
@@ -101,18 +104,21 @@ function drawCircles (json){
 				showDetailsPane(d,i);
 			}
 			showLinks(i);
-			//d3.selectAll("circle").attr('r', function(d){return d.r});
-			//d3.select(this).attr("r", function(d){return d.r+d.r*0.25});
+
+			d3.selectAll("circle")
+				//.attr('r', function(d){return d.r})
+				.style('fill', function(d){return d.color});
+
+			d3.select(this)
+				//.attr("r", function(d){return d.r+d.r*0.25})
+				.style('fill', 'red');
 		})
 	    .transition()
 	    .duration(500)
 	    .delay(function(d,i){return d.r})
 	    .attr("r", function(d) { return d.r; })
 	    .style("fill", function(d) {
-			return randomColor({
-	   			luminosity: 'light',
-	   			hue: 'blue'
-			})
+			return d.color;
 		});
 
 
@@ -166,12 +172,21 @@ function drawCircles (json){
 
 	  function recurse(name, node) {
 	    if (node.children) node.children.forEach(function(child) { recurse(node.name, child); });
-	    else classes.push({packageName: name, name: node.name, value: node.size, paperCount: node.paperCount});
+	    else classes.push({packageName: name, name: node.name, value: node.size, paperCount: node.paperCount, color: node.color});
 	  }
 
 	  recurse(null, root);
 	  return {children: classes};
 	}
+}
+
+function pickAuthor(author){
+	
+	var e = document.createEvent('UIEvents');
+	e.initUIEvent('click', true, true, window, 1);
+	
+	var elem = d3.selectAll("circle").filter(function(d, i) { return d.name == author; });
+	elem.node().dispatchEvent(e);
 }
 
 d3.selection.prototype.moveToFront = function() {
