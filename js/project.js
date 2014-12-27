@@ -2,6 +2,7 @@ var nodes;
 var force;
 var HEIGHT = window.innerHeight-5;
 var WIDTH = $("#container").width();
+var prev_click;
 
 var linearScale;
 var circle;
@@ -22,7 +23,13 @@ var display =  function(){
     var background = svg.append('rect')
     	.style('fill','white')
     	.attr('width', 10000)
-    	.attr('height', 10000);
+    	.attr('height', 10000)
+    	.on('click', function(){
+    		svg.selectAll("line").remove();
+    		d3.selectAll('circle').attr('opacity',1);
+    		details_showing = false;
+			hideDetailsPane();
+    	});
 
     //scale data to fit screen
     linearScale = d3.scale.linear().domain([0,2]);
@@ -46,7 +53,7 @@ var display =  function(){
     .sort(function(a,b){
     	return b.value-a.value;
     })
-    .size([WIDTH, HEIGHT])
+    .size([WIDTH-300, HEIGHT])
     .padding(1.5);
 
 	drawCircles(data);
@@ -94,6 +101,8 @@ function drawCircles (json){
 				showDetailsPane(d,i);
 			}
 			showLinks(i);
+			//d3.selectAll("circle").attr('r', function(d){return d.r});
+			//d3.select(this).attr("r", function(d){return d.r+d.r*0.25});
 		})
 	    .transition()
 	    .duration(500)
@@ -110,8 +119,10 @@ function drawCircles (json){
 
     function showLinks(index){
     	svg.selectAll("line").remove();
+    	d3.selectAll('circle').attr('opacity',1);
 
-    	var links_copy = $.extend(true, [], links);
+    	var links_copy = new Array();
+    	links_copy = $.extend(true, [], links);
     	links_copy = links_copy.filter(function(element, i, array){
     		if(element.source != index)   return false;
 			else return true;
@@ -124,12 +135,29 @@ function drawCircles (json){
 	        .attr('y1', function(d,i) { return node[0][d.source].transform.animVal[0].matrix.f; })
 	        .attr('x2', function(d,i) { return node[0][d.source].transform.animVal[0].matrix.e; })
 	        .attr('y2', function(d,i) { return node[0][d.source].transform.animVal[0].matrix.f; })
-	        .style('stroke', '#000')
-	        .style('stroke-width', 1)
+	        .style('stroke', '#222')
+	        .style('stroke-width', 2)
 	        .transition()
 	    	.duration(500)
 	    	.attr('x2', function(d,i) { return node[0][d.target].transform.animVal[0].matrix.e; })
 	        .attr('y2', function(d,i) { return node[0][d.target].transform.animVal[0].matrix.f; });
+
+	    var targets = new Array();    
+	    for(var i=0; i<links_copy.length; i++){
+	    	targets.push(authors_copy[links_copy[i].target].author);
+	    }    
+	    console.log(targets);
+
+	    d3.selectAll('circle')
+	    .attr('opacity', function(d,i){
+	    	if(targets.indexOf(d.name) == -1 && d.name != authors_copy[index].author){
+	    		return 0.1;
+	    	} 
+	    	console.log(i, authors_copy[i].author, targets);
+	    	d3.select(this).moveToFront();
+	    	console.log(d.name, i);
+	    	return 1;
+	    })    
     }
 
 

@@ -114,7 +114,6 @@ var calcLinks = function(array){
       }
     }
   }
-  console.log(links);
 }
 
 // find connection of a given paper

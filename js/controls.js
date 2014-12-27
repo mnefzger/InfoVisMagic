@@ -64,7 +64,7 @@ function showDetailsPane(node, index){
 
   }
 
-  $("#slideInPanel").animate({width:'250px'},150);
+  $("#slideInPanel").animate({width:'400px'},150);
 }
 
 function hideDetailsPane(){
