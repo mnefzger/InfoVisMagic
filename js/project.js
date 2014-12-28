@@ -20,6 +20,7 @@ var display =  function(){
 		.append("g")
     	.call(d3.behavior.zoom().scaleExtent([0.2, 10]).on("zoom", zoom));
 
+    //create white background
     var background = svg.append('rect')
     	.style('fill','white')
     	.attr('width', 10000)
@@ -36,7 +37,7 @@ var display =  function(){
     //scale data to fit screen
     linearScale = d3.scale.linear().domain([0,2]);
 
-
+    // fill nodes on startup
 	nodes = new Array();
 	for(var j=0; j<n; j++){
 		nodes.push({
@@ -47,17 +48,18 @@ var display =  function(){
 		});
 	}
 
+	//
 	var	data = {
     		"name":"root",
 			"children": nodes
 			};
 
-   bubble = d3.layout.pack()
-    .sort(function(a,b){
-    	return b.value-a.value;
-    })
-    .size([WIDTH-300, HEIGHT])
-    .padding(10);
+   	bubble = d3.layout.pack()
+	    .sort(function(a,b){
+	    	return b.value-a.value;
+	    })
+	    .size([WIDTH-300, HEIGHT])
+	    .padding(10);
 
 	drawCircles(data);
 
@@ -152,16 +154,13 @@ function drawCircles (json){
 	    for(var i=0; i<links_copy.length; i++){
 	    	targets.push(authors_copy[links_copy[i].target].author);
 	    }    
-	    console.log(targets);
 
 	    d3.selectAll('circle')
 	    .attr('opacity', function(d,i){
 	    	if(targets.indexOf(d.name) == -1 && d.name != authors_copy[index].author){
 	    		return 0.1;
 	    	} 
-	    	console.log(i, authors_copy[i].author, targets);
 	    	d3.select(this).moveToFront();
-	    	console.log(d.name, i);
 	    	return 1;
 	    })    
     }
@@ -180,8 +179,8 @@ function drawCircles (json){
 	}
 }
 
+//Simulate click on node when using textual search
 function pickAuthor(author){
-	
 	var e = document.createEvent('UIEvents');
 	e.initUIEvent('click', true, true, window, 1);
 	

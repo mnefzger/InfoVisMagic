@@ -2,23 +2,22 @@ var selected_years = yearsArray; // instantiate with all years selected.
 var authors_copy = new Array();
 
 function updateYearFilter(){
-
-
    selected_years = new Array(); // empty array
     $('#year_picker option:selected').each(function() {
       selected_years.push($(this).val());
     });
 
-
+    //create deep copy of authors
     authors_copy = $.extend(true, [], authors);
 
     for(var i=0; i<authors_copy.length; i++){
         authors_copy[i].papers = authors_copy[i].papers.filter(isInYears);
     }
 
+    //remove authors with empty papers
     authors_copy = authors_copy.filter(isEmpty);
 
-    // Update instructionen für die Visualisierung......
+    // Update nodes of visualisation......
     nodes = new Array();
     for(var i=0; i<authors_copy.length; i++){
       nodes.push({
@@ -37,8 +36,6 @@ function updateYearFilter(){
     drawCircles(json);
 
     calcLinks(authors_copy);
-
-
 }
 
 function isEmpty(element){

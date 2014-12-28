@@ -57,14 +57,16 @@ function success(data){
     $("#loader").text("Failed retrieving data!");
   }
 
-  //make the copy avaiable from start
+  //make the copy available from start
   authors_copy = authors;
 
+  //calculate connections between authors
   calcLinks(authors);
 
-  display();
   populateControls();
 
+  // fire up inital d3 visualisation
+  display();
 
 };
 

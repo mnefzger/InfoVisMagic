@@ -1,5 +1,4 @@
 function populateControls(){
-
   // Year picker
   $("#year_picker").append("<h2>Veröffentlichungsjahr</h2>");
 
@@ -7,7 +6,7 @@ function populateControls(){
     $("#year_picker").append("<option value="+yearsArray[i]+" class='yearPicker_"+yearsArray[i]+"' selected>"+yearsArray[i]+"</option>");
   }
 
-    $('#year_picker').multiselect({
+  $('#year_picker').multiselect({
       maxHeight: 200,
       buttonWidth: '180px',
       buttonContainer: '<div class="btn-group year_picker_container" />',
@@ -51,14 +50,11 @@ function hideDetailsTooltip(node, index){
 }
 
 
-//show Details Pane
 function showDetailsPane(node, index){
-
  $("#slideInPanel").html('');
 
  $("#slideInPanel").append("<h3 id='author_name'>" + authors_copy[index].author + "</h3>");
  $("#slideInPanel").append("<div id='siderBar_papersContainer'></div>");
-  
 
   for(i=0; i<authors_copy[index].papers.length; i++){
     $("#siderBar_papersContainer").append(
@@ -68,7 +64,6 @@ function showDetailsPane(node, index){
       + "</a>"
       +"</div>"
     );
-
   }
 
   $("#slideInPanel").animate({width:'400px'},150);
