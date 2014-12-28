@@ -29,7 +29,8 @@ var display =  function(){
     		svg.selectAll("line").remove();
     		d3.selectAll('circle')
     			.attr('opacity',1)
-    			.attr('r', function(d){return d.r});
+    			.attr('r', function(d){return d.r})
+    			.style('fill', function(d){return d.color});
     		details_showing = false;
 			hideDetailsPane();
     	});
@@ -165,7 +166,6 @@ function drawCircles (json){
 	    })    
     }
 
-
 	function classes(root) {
 	  var classes = [];
 
@@ -178,6 +178,44 @@ function drawCircles (json){
 	  return {children: classes};
 	}
 }
+
+function createPie(){
+		var data = [{"label":"one", "value":20}, 
+            {"label":"two", "value":50}, 
+            {"label":"three", "value":30}];
+
+		var smallSVG = d3.select("#sidePie").append("svg")
+			.data([data])
+			.attr("width", 400)
+			.attr("height", 250)
+			.append("g")
+    		.attr("transform", "translate(" + 400 / 2 + "," + 250 / 2 + ")");
+
+		var arc = d3.svg.arc()
+    		.innerRadius(50)
+    		.outerRadius(100);
+
+		var pie = d3.layout.pie()
+		    .value(function(d,i) { return d.value; });
+
+    	var arcs = smallSVG.selectAll("g.slice")
+    		.data(pie)
+    		.enter().append("svg:g")
+    		.attr("class", "slice");
+
+        arcs.append("path")
+                .attr("fill", function(d, i) { return randomColor(); } ) 
+                .attr("d", function(d){return arc(d)});                                   
+
+        arcs.append("svg:text")                                     
+            .attr("transform", function(d) {                   
+                d.innerRadius = 60;
+                d.outerRadius = 100;
+                return "translate(" + arc.centroid(d) + ")";       
+            })
+            .attr("text-anchor", "middle")                          
+            .text(function(d, i) { return data[i].label; });
+    }
 
 //Simulate click on node when using textual search
 function pickAuthor(author){

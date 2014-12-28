@@ -56,15 +56,20 @@ function showDetailsPane(node, index){
  $("#slideInPanel").append("<h3 id='author_name'>" + authors_copy[index].author + "</h3>");
  $("#slideInPanel").append("<div id='siderBar_papersContainer'></div>");
 
+ $("#siderBar_papersContainer").append("<div id='sidePie'></div>");
+ createPie();
+
   for(i=0; i<authors_copy[index].papers.length; i++){
     $("#siderBar_papersContainer").append(
-      "<div class='paperContainer'>"
-      + "<a href='#'>"
-      +   authors_copy[index].papers[i].title
-      + "</a>"
-      +"</div>"
+        "<div class='paperContainer'>"
+      +   "<a href='#'>"
+      +     "<strong>"+ authors_copy[index].papers[i].year + "</strong> | " + authors_copy[index].papers[i].title
+      +   "</a>"
+      + "</div>"
     );
   }
+
+  
 
   $("#slideInPanel").animate({width:'400px'},150);
 }
