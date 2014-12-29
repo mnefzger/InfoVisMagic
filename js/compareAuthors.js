@@ -35,6 +35,7 @@ function compareAuthors(authorIndex){
 
   // comparison field
   if(candidate_one!=null){
+    // INHALT DES VERGLEICHSPANELS 1
     $("#slideInPanel").html("");
     $("#slideInPanel").animate({width:'300px'},150);
     $("#slideInPanel2").animate({right:'300px'},150);
@@ -47,6 +48,7 @@ function compareAuthors(authorIndex){
   }
 
   if(candidate_two!=null){
+    // INHALT DES VERGLEICHSPANELS 2
     $("#slideInPanel2").show(150);
     $("#slideInPanel2").html("");
     $("#slideInPanel2").animate({width:'300px'},150);
@@ -62,6 +64,15 @@ function compareAuthors(authorIndex){
 
 function comparisonPanesContent(authorIndex, panel){
   $("#"+panel).append("<h3 id='author_name'>" + authors_copy[authorIndex].author + "</h3>");
+
+  if(panel== "slideInPanel"){
+    candidate = 1
+  }
+  else {
+    candidate = 2;
+  }
+  $("#"+panel+" #author_name").append('<button type="button" id="compare_authors_button" onClick="javascript:clearCandidate('+candidate+')" class="btn btn-default btn-sm">'
+  +'<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span></button>');
 }
 
 function clearComparison(){
@@ -69,6 +80,8 @@ function clearComparison(){
   $("#compare_container").hide();
   $("#slideInPanel").animate({width:"0px"},150);
   $("#slideInPanel2").hide(150);
+  svg.selectAll("line").remove();
+  d3.selectAll('circle').attr('opacity',1);
 }
 
 
