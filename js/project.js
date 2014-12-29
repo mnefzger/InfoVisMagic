@@ -2,7 +2,7 @@ var nodes;
 var force;
 var HEIGHT = window.innerHeight-5;
 var WIDTH = $("#container").width();
-var prev_click;
+var selected_author = '';
 
 var linearScale;
 var circle;
@@ -31,6 +31,7 @@ var display =  function(){
     			.attr('opacity',1)
     			.attr('r', function(d){return d.r})
     			.style('fill', function(d){return d.color});
+    			selected_author = '';
     		details_showing = false;
 			hideDetailsPane();
     	});
@@ -102,8 +103,8 @@ function drawCircles (json){
 				hideLinks();
 				hideDetailsPane();
 				d3.select(this)
-					//.attr("r", function(d){return d.r+d.r*0.25})
 					.style('fill', function(d){return d.color});
+				selected_author = '';
 			}
 			else{
 				current_name = d.name;
@@ -111,11 +112,10 @@ function drawCircles (json){
 				showLinks(i);
 				showDetailsPane(d,i);
 				d3.selectAll("circle")
-					//.attr('r', function(d){return d.r})
 					.style('fill', function(d){return d.color});
 				d3.select(this)
-					//.attr("r", function(d){return d.r+d.r*0.25})
 					.style('fill', 'red');
+				selected_author = d.name;
 			}
 		})
 	    .transition()
@@ -191,33 +191,35 @@ function drawCircles (json){
 function createPie(author_index){
 
    // Piece together the data fot the Pie chart.
-			array = new Array();
+		array = new Array();
 
-			temp = 0;
-			for(i=0; i<authors_copy[author_index].papers.length; i++){
-				if(authors_copy[author_index].papers[i].year != temp){
-					year = authors_copy[author_index].papers[i].year;
-					if(array[year] == undefined) { array[year] = 0; }
-					array[year] = 	array[year]+1;
-				}
+		temp = 0;
+		for(i=0; i<authors_copy[author_index].papers.length; i++){
+			if(authors_copy[author_index].papers[i].year != temp){
+				year = authors_copy[author_index].papers[i].year;
+				if(array[year] == undefined) { array[year] = 0; }
+				array[year] = 	array[year]+1;
 			}
+		}
 
-    	// convert number array to json
-			var data = new Array();
-			for(var key in array) {
-				yearObj = {
-				 		"label":key,
-				  	"value":array[key]
-					};
-					data.push(yearObj);
-			}
+		
+
+    	// convert number array to js object
+		var data = new Array();
+		for(var key in array) {
+			yearObj = {
+			 		"label":key,
+			  		"value":array[key]
+			};
+			data.push(yearObj);
+		}
 
 		var smallSVG = d3.select("#sidePie").append("svg")
 			.data([data])
 			.attr("width", 400)
-			.attr("height", 250)
+			.attr("height", 260)
 			.append("g")
-    		.attr("transform", "translate(" + 400 / 2 + "," + 250 / 2 + ")");
+    		.attr("transform", "translate(" + 390 / 2 + "," + 260 / 2 + ")");
 
 		var arc = d3.svg.arc()
     		.innerRadius(65)
@@ -253,7 +255,6 @@ function createPie(author_index){
             })
             .attr("text-anchor", "middle")
             .text(function(d, i) { 
-            	console.log(d);
             	if((d.endAngle - d.startAngle) < 0.3 ) return '';
             	return data[i].label; 
             });
@@ -267,6 +268,7 @@ function pickAuthor(author){
 	e.initUIEvent('click', true, true, window, 1);
 
 	var elem = d3.selectAll("circle").filter(function(d, i) { return d.name == author; });
+	elem.style('fill', 'red');
 	elem.node().dispatchEvent(e);
 }
 

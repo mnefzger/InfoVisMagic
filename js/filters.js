@@ -36,6 +36,11 @@ function updateYearFilter(){
     drawCircles(json);
 
     calcLinks(authors_copy);
+
+    // remember the old selection
+    if(selected_author != '') {
+      pickAuthor(selected_author);
+    }
 }
 
 function isEmpty(element){
