@@ -28,7 +28,7 @@ function populateControls(){
 
   $('#author_picker').typeahead({source: getOnlyNames(authors),
                                  afterSelect: function(item){
-                                   highlightAuthor(item);
+                                   pickAuthor(item);
                                  }
                                });
 
@@ -43,11 +43,6 @@ function getOnlyNames(authors_array){
     array.push(authors_array[i].author);
   }
   return array;
-}
-
-
-function highlightAuthor(author){
-  console.log(author);
 }
 
 
