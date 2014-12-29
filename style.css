@@ -52,7 +52,7 @@ background: rgba(52,56,56,0.8);
 }
 
 #siderBar_papersContainer .paperContainer {
-	padding: 15px;
+	padding: 5px 10px;
 }
 
 #author_name {
@@ -203,6 +203,7 @@ background: rgba(52,56,56,0.8);
 	color: white;
 	padding: 25px;
 	display: none;
+	z-index: 999999;
 }
 
 #tooltip h3{
