@@ -161,7 +161,7 @@ function drawCircles (json){
 	    d3.selectAll('circle')
 	    .attr('opacity', function(d,i){
 	    	if(targets.indexOf(d.name) == -1 && d.name != authors_copy[index].author){
-	    		return 0.1;
+	    		return 0.2;
 	    	}
 	    	d3.select(this).moveToFront();
 	    	return 1;
