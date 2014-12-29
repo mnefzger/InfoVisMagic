@@ -240,10 +240,13 @@ function createPie(author_index){
             .attr("transform", function(d) {
                 d.innerRadius = 60;
                 d.outerRadius = 100;
-                return "translate(" + arc.centroid(d) + ")";
+      			return "translate(" + arc.centroid(d) + ") " +
+                    	"rotate(" + getAngle(d) + ")";  
             })
             .attr("text-anchor", "middle")
             .text(function(d, i) { return data[i].label; });
+
+        
     }
 
 //Simulate click on node when using textual search
@@ -254,6 +257,12 @@ function pickAuthor(author){
 	var elem = d3.selectAll("circle").filter(function(d, i) { return d.name == author; });
 	elem.node().dispatchEvent(e);
 }
+
+function getAngle(d) {
+	var angle = (180 / Math.PI * (d.startAngle + d.endAngle) / 2 - 90);
+	if(angle > 120) angle -= 180;
+	return angle;
+};
 
 d3.selection.prototype.moveToFront = function() {
   return this.each(function(){
