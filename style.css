@@ -129,7 +129,7 @@ background: rgba(52,56,56,0.8);
 	list-style: none;
 }
 
-.sidebar-nav li {
+.sidebar-nav > li {
 	text-indent: 0px;
 	line-height: 40px;
 	margin-left: 25px;
