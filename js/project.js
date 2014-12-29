@@ -101,22 +101,22 @@ function drawCircles (json){
 				details_showing = false;
 				hideLinks();
 				hideDetailsPane();
+				d3.select(this)
+					//.attr("r", function(d){return d.r+d.r*0.25})
+					.style('fill', function(d){return d.color});
 			}
 			else{
 				current_name = d.name;
 				details_showing = true;
 				showLinks(i);
 				showDetailsPane(d,i);
+				d3.selectAll("circle")
+					//.attr('r', function(d){return d.r})
+					.style('fill', function(d){return d.color});
+				d3.select(this)
+					//.attr("r", function(d){return d.r+d.r*0.25})
+					.style('fill', 'red');
 			}
-
-
-			d3.selectAll("circle")
-				//.attr('r', function(d){return d.r})
-				.style('fill', function(d){return d.color});
-
-			d3.select(this)
-				//.attr("r", function(d){return d.r+d.r*0.25})
-				.style('fill', 'red');
 		})
 	    .transition()
 	    .duration(500)
