@@ -24,7 +24,7 @@ function populateControls(){
       event.preventDefault();
       pickAuthor($(this).val());
     }
-  });  
+  });
 
 }
 
@@ -62,14 +62,14 @@ function showDetailsPane(node, index){
   for(i=0; i<authors_copy[index].papers.length; i++){
     $("#siderBar_papersContainer").append(
         "<div class='paperContainer'>"
-      +   "<a href='#'>"
+      +   "<a href='" + authors_copy[index].papers[i].url + "' target='_blank'>"
       +     "<strong>"+ authors_copy[index].papers[i].year + "</strong> | " + authors_copy[index].papers[i].title
       +   "</a>"
       + "</div>"
     );
   }
 
-  
+
 
   $("#slideInPanel").animate({width:'400px'},150);
 }

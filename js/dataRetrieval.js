@@ -41,12 +41,14 @@ function success(data){
 
         var title = $(this).children().eq(1).children('b').children('a').text();
         var info = $(this).children().eq(1).children('i').text();
+        var url = "http://www.medien.ifi.lmu.de" + $(this).children().eq(1).children('b').children('a').attr('href');
 
         var entry = {
-          authors: getAuthors($(this).children().eq(1), title, year),
+          authors: getAuthors($(this).children().eq(1), title, year, url),
           title: title,
           info: info,
-          year: year
+          year: year,
+          url: url
         }
 
         papers.push(entry);
@@ -70,7 +72,7 @@ function success(data){
 
 };
 
-var getAuthors = function(data, title, year){
+var getAuthors = function(data, title, year, url){
   var allAuthors = data.text().split('\n')[0];
   var aut = allAuthors.split(',');
 
@@ -84,7 +86,8 @@ var getAuthors = function(data, title, year){
 
     paper = {
       title: title,
-      year: year
+      year: year,
+      url: url
     }
 
     $.each(authors, function(index, obj){
