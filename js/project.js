@@ -252,7 +252,11 @@ function createPie(author_index){
                     	"rotate(" + getAngle(d) + ")";  
             })
             .attr("text-anchor", "middle")
-            .text(function(d, i) { return data[i].label; });
+            .text(function(d, i) { 
+            	console.log(d);
+            	if((d.endAngle - d.startAngle) < 0.3 ) return '';
+            	return data[i].label; 
+            });
 
         
     }
