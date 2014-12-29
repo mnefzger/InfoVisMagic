@@ -3,6 +3,7 @@ var authors = new Array();
 var yearsArray = new Array();
 var links = new Array();
 
+
 $(document).ready(function() {
 
   /*$.ajax({
@@ -58,6 +59,8 @@ function success(data){
   else { // error
     $("#loader").text("Failed retrieving data!");
   }
+
+
 
   //make the copy available from start
   authors_copy = authors;

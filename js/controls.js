@@ -19,13 +19,35 @@ function populateControls(){
       includeSelectAllOption: true
   });
 
-  $('#author_picker').keypress(function(event) {
-    if ( event.which == 13 ) {
-      event.preventDefault();
-      pickAuthor($(this).val());
-    }
-  });
+  // $('#author_picker').keypress(function(event) {
+  //   if ( event.which == 13 ) {
+  //     event.preventDefault();
+  //     pickAuthor($(this).val());
+  //   }
+  // });
 
+  $('#author_picker').typeahead({source: getOnlyNames(authors),
+                                 afterSelect: function(item){
+                                   highlightAuthor(item);
+                                 }
+                               });
+
+}
+
+
+// return an array with only the names of all authors -> Autocomplete
+function getOnlyNames(authors_array){
+  array = new Array();
+
+  for(i=0; i<authors_array.length; i++){
+    array.push(authors_array[i].author);
+  }
+  return array;
+}
+
+
+function highlightAuthor(author){
+  console.log(author);
 }
 
 
