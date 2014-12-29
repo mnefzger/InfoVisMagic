@@ -99,14 +99,16 @@ function drawCircles (json){
 			// show/hide slide in Panel
 			if(details_showing == true && d.name == current_name){
 				details_showing = false;
+				hideLinks();
 				hideDetailsPane();
 			}
 			else{
 				current_name = d.name;
 				details_showing = true;
+				showLinks(i);
 				showDetailsPane(d,i);
 			}
-			showLinks(i);
+
 
 			d3.selectAll("circle")
 				//.attr('r', function(d){return d.r})
@@ -151,20 +153,27 @@ function drawCircles (json){
 	    	.attr('x2', function(d,i) { return node[0][d.target].transform.animVal[0].matrix.e; })
 	        .attr('y2', function(d,i) { return node[0][d.target].transform.animVal[0].matrix.f; });
 
-	    var targets = new Array();    
+	    var targets = new Array();
 	    for(var i=0; i<links_copy.length; i++){
 	    	targets.push(authors_copy[links_copy[i].target].author);
-	    }    
+	    }
 
 	    d3.selectAll('circle')
 	    .attr('opacity', function(d,i){
 	    	if(targets.indexOf(d.name) == -1 && d.name != authors_copy[index].author){
 	    		return 0.1;
-	    	} 
+	    	}
 	    	d3.select(this).moveToFront();
 	    	return 1;
-	    })    
+	    })
     }
+
+
+  function hideLinks(){
+		svg.selectAll("line").remove();
+		d3.selectAll('circle').attr('opacity',1);
+	}
+
 
 	function classes(root) {
 	  var classes = [];
@@ -180,8 +189,8 @@ function drawCircles (json){
 }
 
 function createPie(){
-		var data = [{"label":"one", "value":20}, 
-            {"label":"two", "value":50}, 
+		var data = [{"label":"one", "value":20},
+            {"label":"two", "value":50},
             {"label":"three", "value":30}];
 
 		var smallSVG = d3.select("#sidePie").append("svg")
@@ -204,16 +213,16 @@ function createPie(){
     		.attr("class", "slice");
 
         arcs.append("path")
-                .attr("fill", function(d, i) { return randomColor(); } ) 
-                .attr("d", function(d){return arc(d)});                                   
+                .attr("fill", function(d, i) { return randomColor(); } )
+                .attr("d", function(d){return arc(d)});
 
-        arcs.append("svg:text")                                     
-            .attr("transform", function(d) {                   
+        arcs.append("svg:text")
+            .attr("transform", function(d) {
                 d.innerRadius = 60;
                 d.outerRadius = 100;
-                return "translate(" + arc.centroid(d) + ")";       
+                return "translate(" + arc.centroid(d) + ")";
             })
-            .attr("text-anchor", "middle")                          
+            .attr("text-anchor", "middle")
             .text(function(d, i) { return data[i].label; });
     }
 
@@ -221,7 +230,7 @@ function createPie(){
 function pickAuthor(author){
 	var e = document.createEvent('UIEvents');
 	e.initUIEvent('click', true, true, window, 1);
-	
+
 	var elem = d3.selectAll("circle").filter(function(d, i) { return d.name == author; });
 	elem.node().dispatchEvent(e);
 }
