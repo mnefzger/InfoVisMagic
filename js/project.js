@@ -220,8 +220,8 @@ function createPie(author_index){
     		.attr("transform", "translate(" + 400 / 2 + "," + 250 / 2 + ")");
 
 		var arc = d3.svg.arc()
-    		.innerRadius(50)
-    		.outerRadius(100);
+    		.innerRadius(65)
+    		.outerRadius(120);
 
 		var pie = d3.layout.pie()
 		    .value(function(d,i) { return d.value; })
@@ -232,9 +232,17 @@ function createPie(author_index){
     		.enter().append("svg:g")
     		.attr("class", "slice");
 
-        arcs.append("path")
+        var pie = arcs.append("path")
                 .attr("fill", function(d, i) { return randomColor({hue:'green'}); } )
-                .attr("d", function(d){return arc(d)});
+                .transition()
+                .duration(250)
+                .attrTween('d', function(d) {
+				   var i = d3.interpolate(d.startAngle+0.1, d.endAngle);
+				   return function(t) {
+				       d.endAngle = i(t);
+				     return arc(d);
+				   }
+				});
 
         arcs.append("svg:text")
             .attr("transform", function(d) {
