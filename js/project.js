@@ -194,9 +194,9 @@ function createPie(author_index){
 			array = new Array();
 
 			temp = 0;
-			for(i=0; i<authors[author_index].papers.length; i++){
-				if(authors[author_index].papers[i].year != temp){
-					year = authors[author_index].papers[i].year;
+			for(i=0; i<authors_copy[author_index].papers.length; i++){
+				if(authors_copy[author_index].papers[i].year != temp){
+					year = authors_copy[author_index].papers[i].year;
 					if(array[year] == undefined) { array[year] = 0; }
 					array[year] = 	array[year]+1;
 				}
@@ -224,7 +224,8 @@ function createPie(author_index){
     		.outerRadius(100);
 
 		var pie = d3.layout.pie()
-		    .value(function(d,i) { return d.value; });
+		    .value(function(d,i) { return d.value; })
+		    .sort(function(a,b){return a-b});
 
     	var arcs = smallSVG.selectAll("g.slice")
     		.data(pie)
@@ -232,7 +233,7 @@ function createPie(author_index){
     		.attr("class", "slice");
 
         arcs.append("path")
-                .attr("fill", function(d, i) { return randomColor(); } )
+                .attr("fill", function(d, i) { return randomColor({hue:'green'}); } )
                 .attr("d", function(d){return arc(d)});
 
         arcs.append("svg:text")
