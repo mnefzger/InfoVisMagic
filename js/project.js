@@ -188,10 +188,29 @@ function drawCircles (json){
 	}
 }
 
-function createPie(){
-		var data = [{"label":"one", "value":20},
-            {"label":"two", "value":50},
-            {"label":"three", "value":30}];
+function createPie(author_index){
+
+   // Piece together the data fot the Pie chart.
+			array = new Array();
+
+			temp = 0;
+			for(i=0; i<authors[author_index].papers.length; i++){
+				if(authors[author_index].papers[i].year != temp){
+					year = authors[author_index].papers[i].year;
+					if(array[year] == undefined) { array[year] = 0; }
+					array[year] = 	array[year]+1;
+				}
+			}
+
+    	// convert number array to json
+			var data = new Array();
+			for(var key in array) {
+				yearObj = {
+				 		"label":key,
+				  	"value":array[key]
+					};
+					data.push(yearObj);
+			}
 
 		var smallSVG = d3.select("#sidePie").append("svg")
 			.data([data])

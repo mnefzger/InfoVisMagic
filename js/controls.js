@@ -74,7 +74,7 @@ function showDetailsPane(node, index){
  $("#slideInPanel").append("<div id='siderBar_papersContainer'></div>");
 
  $("#siderBar_papersContainer").append("<div id='sidePie'></div>");
- createPie();
+ createPie(index);
 
   for(i=0; i<authors_copy[index].papers.length; i++){
     $("#siderBar_papersContainer").append(
