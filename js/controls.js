@@ -1,3 +1,4 @@
+
 function populateControls(){
   // Year picker
   $("#year_picker").append("<h2>Veröffentlichungsjahr</h2>");
@@ -67,28 +68,58 @@ function hideDetailsTooltip(node, index){
 }
 
 
-function showDetailsPane(node, index){
- $("#slideInPanel").html('');
+function detailsPaneContent(panel, node, index){
+  $("#"+panel).html('');
 
- $("#slideInPanel").append("<h3 id='author_name'>" + authors_copy[index].author + "</h3>");
- $("#slideInPanel").append("<div id='siderBar_papersContainer'></div>");
+  $("#"+panel).append("<h3 id='author_name'>" + authors_copy[index].author + "</h3>");
 
- $("#siderBar_papersContainer").append("<div id='sidePie'></div>");
- createPie(index);
+  $("#"+panel+" #author_name").append('<button type="button" id="compare_authors_button" onClick="javascript:compareAuthors('+index+')" class="compare_button_'+index+' btn btn-default btn-sm">'
+  +'<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Vergleichen</button>');
+
+  $("#"+panel).append("<div id='siderBar_papersContainer'></div>");
+
+  $("#"+panel+" #siderBar_papersContainer").append("<div id='sidePie'></div>");
+  createPie(index);
 
   for(i=0; i<authors_copy[index].papers.length; i++){
-    $("#siderBar_papersContainer").append(
-        "<div class='paperContainer'>"
+    $("#"+panel +" #siderBar_papersContainer").append(
+      "<div class='paperContainer'>"
       +   "<a href='" + authors_copy[index].papers[i].url + "' target='_blank'>"
       +     "<strong>"+ authors_copy[index].papers[i].year + "</strong> | " + authors_copy[index].papers[i].title
       +   "</a>"
       + "</div>"
     );
   }
+}
 
 
+function showDetailsPane(node, index){
 
+  if(candidate_one == null && candidate_two != null){ // second Panel is aligned to the right (we eliminaed first candidate withour eliminating the second first)
+    $("#slideInPanel2").animate({right:'400px'},150);
+  }
+
+ if(compareMode!=true){
+
+  detailsPaneContent("slideInPanel", node, index);
+
+  // disable buttons
   $("#slideInPanel").animate({width:'400px'},150);
+  disableCompareButtons();
+  }
+  else { //compareMode
+    if(candidate_one == null){
+      detailsPaneContent("slideInPanel", node, index);
+      $("#slideInPanel").animate({width:'400px'},150);
+      disableCompareButtons();
+    }
+    else if(candidate_two == null){
+      detailsPaneContent("slideInPanel2", node, index);
+      $("#slideInPanel2").show(150);
+      $("#slideInPanel2").animate({width:'400px'},150);
+      disableCompareButtons();
+    }
+  }
 }
 
 function hideDetailsPane(){
