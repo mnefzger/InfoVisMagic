@@ -19,29 +19,45 @@ function compareAuthors(authorIndex, candidate){ // set candidate to determine w
    candidate_two = authorIndex;
  }
 
- toggleCompareButton();
- 
+ if(compareMode == true){
+ compareContent();
+ }
  console.log("compare: "+candidate_one +" | "+candidate_two);
 
 }
 
 function toggleCompareButton(){
-    if($("#compare_authors_button").hasClass("active")){
-      $("#compare_authors_button").removeClass("active");
-      $("#compare_authors_button span").removeClass("glyphicon-eye-close");
-      $("#compare_authors_button span").addClass("glyphicon-eye-open");
-      clearComparison();
-    }
-    else {
-      $("#compare_authors_button").addClass("active");
-      $("#compare_authors_button span").removeClass("glyphicon-eye-open");
-      $("#compare_authors_button span").addClass("glyphicon-eye-close");
-    }
+  if($("#compare_authors_button").hasClass("active")){
+    $("#compare_authors_button").removeClass("active");
+    $("#compare_authors_button span").removeClass("glyphicon-eye-close");
+    $("#compare_authors_button span").addClass("glyphicon-eye-open");
+    clearComparison();
+  }
+  else {
+    $("#compare_authors_button").addClass("active");
+    $("#compare_authors_button span").removeClass("glyphicon-eye-open");
+    $("#compare_authors_button span").addClass("glyphicon-eye-close");
+  }
 }
 
-
 function clearComparison(){
+  temp = candidate_one;
   compareMode = false;
   candidate_one = null;
   candidate_two = null;
+
+  showDetailsPane(null,temp);
+}
+
+
+function compareContent(){
+    $("#siderBar_papersContainer #sidePie").remove();
+    $(".paperContainer").remove();
+ 
+    if(candidate_two!=null){
+      $("#siderBar_papersContainer").append("<p>Vergleich mit "+authors[candidate_two].author+"</p>");
+    }
+    else {
+      $("#siderBar_papersContainer").append("<p>Vergleichspartner aussuchen</p>");
+    }
 }

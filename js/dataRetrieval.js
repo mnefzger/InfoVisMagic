@@ -6,6 +6,7 @@ var links = new Array();
 
 $(document).ready(function() {
 
+
   /*$.ajax({
   url: "http://www.medien.ifi.lmu.de/cgi-bin/search.pl?all:all:all:all:all",
   success: success
