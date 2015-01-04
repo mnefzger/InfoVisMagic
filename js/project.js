@@ -28,12 +28,12 @@ var display =  function(){
     	.on('click', function(){
     		svg.selectAll("line").remove();
     		d3.selectAll('circle')
-    			.attr('opacity',1)
-    			.attr('r', function(d){return d.r})
-    			.style('fill', function(d){return d.color});
-    			selected_author = '';
+	    		.style('opacity',1)
+	    		.style('fill', function(d){return d.color});
+    		selected_author = '';
     		details_showing = false;
 			hideDetailsPane();
+			if(compareMode) compareMode = false;
     	});
 
     //scale data to fit screen
@@ -137,7 +137,7 @@ function drawCircles (json){
 
     function showLinks(index){
     	svg.selectAll("line").remove();
-    	d3.selectAll('circle').attr('opacity',1);
+    	d3.selectAll('circle').style('opacity',1);
 
     	var links_copy = new Array();
     	links_copy = $.extend(true, [], links);
@@ -166,7 +166,7 @@ function drawCircles (json){
 	    }
 
 	    d3.selectAll('circle')
-	    .attr('opacity', function(d,i){
+	    .style('opacity', function(d,i){
 	    	if(targets.indexOf(d.name) == -1 && d.name != authors_copy[index].author){
 	    		return 0.2;
 	    	}
@@ -176,7 +176,7 @@ function drawCircles (json){
     }
 
 
-  function hideLinks(){
+  	function hideLinks(){
 		svg.selectAll("line").remove();
 		d3.selectAll('circle').attr('opacity',1);
 	}
@@ -208,8 +208,6 @@ function createPie(author_index){
 				array[year] = 	array[year]+1;
 			}
 		}
-
-
 
     	// convert number array to js object
 		var data = new Array();
@@ -284,6 +282,68 @@ function getAngle(d) {
 	if(angle > 120) angle -= 180;
 	return angle;
 };
+
+function clearCompareInSVG(author){
+	d3.selectAll('circle')
+	    		.style('opacity',1)
+	    		.style('fill', function(d){return d.color});
+	    		console.log(author);
+	pickAuthor(author);    		
+
+}
+
+function makeBarCharts(index1, index2){
+	d3.selectAll('circle')
+				.style('opacity', 0.2)
+	    		.style('fill', function(d){return d.color});
+
+	svg.selectAll("line").remove();		
+
+	var a1 = d3.selectAll('circle').filter(function(d, i) { return d.name == authors_copy[index1].author ; });
+	var a2 = d3.selectAll('circle').filter(function(d, i) { return d.name == authors_copy[index2].author ; });
+	a1.style('fill', '#AEE239').style('opacity', 1);
+	a2.style('fill', '#FA6900').style('opacity', 1);
+
+
+	var data = [authors_copy[index1].papers.length, authors_copy[index2].papers.length];
+
+	var bar1SVG = d3.select("#bar1").append("svg")
+			.data([data])
+			.attr("width", 375)
+			.attr("height", 80)
+			.append("g")
+			.attr("transform", "translate(20 , 10)");
+	
+
+	var scale = d3.scale.linear()
+    	.domain([0, d3.max(data)])
+    	.range([0, 325]);
+
+	var bars = bar1SVG.selectAll("g.bars")
+    	.data(data)
+    	.enter().append("svg:g");
+
+  	bars.append("rect")
+    	.attr("width", function(d) { return 0; })
+    	.attr("height", 20)
+    	.attr("y", function(d,i){return i*25;})
+    	.style("fill", function(d,i){
+    		if(i==0) return '#AEE239';
+    		return '#FA6900';
+    	})
+    	.transition()
+    	.duration(250)
+    	.attr("width", function(d) { return scale(d); });
+
+    bars.append("text")	
+    	.attr("text-anchor", "middle")
+    	.text(function(d) { return d; })
+    	.style('fill', '#fff')
+    	.attr("transform", function(d, i) {
+    		if(i==0) return "translate(" + (scale(data[i])+15) + "," + 15 + ")";
+      		return "translate(" + (scale(data[i])+15) + "," + (i*40) + ")";
+        });
+}
 
 d3.selection.prototype.moveToFront = function() {
   return this.each(function(){

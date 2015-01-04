@@ -70,10 +70,10 @@ function hideDetailsTooltip(node, index){
 function showDetailsPane(node, index){
  $("#slideInPanel").html('');
 
- $("#slideInPanel").append("<h3 id='author_name'>" + authors_copy[index].author + "</h3>");
+ $("#slideInPanel").append("<div id='author_header'><h3 id='author_name'>" + authors_copy[index].author + "</h3></div>");
  $("#slideInPanel").append("<div id='siderBar_papersContainer'></div>");
 
- $("#slideInPanel #author_name").append('<button type="button" id="compare_authors_button" onClick="javascript:compareAuthors('+index+'); toggleCompareButton()" class="compare_button_'+index+' btn btn-default btn-sm">'
+ $("#slideInPanel #author_header").append('<button type="button" id="compare_authors_button" onClick="javascript:compareAuthors('+index+'); toggleCompareButton()" class="compare_button_'+index+' btn btn-default btn-sm">'
  +'<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Vergleichen</button>');
 
  $("#siderBar_papersContainer").append("<div id='sidePie'></div>");

@@ -37,6 +37,7 @@ function toggleCompareButton(){
     $("#compare_authors_button").addClass("active");
     $("#compare_authors_button span").removeClass("glyphicon-eye-open");
     $("#compare_authors_button span").addClass("glyphicon-eye-close");
+    $("#author_name").text("Vergleich");
   }
 }
 
@@ -46,18 +47,38 @@ function clearComparison(){
   candidate_one = null;
   candidate_two = null;
 
+
+  /*
+
+  TODO: temp is always Alexander Wiethoff...?
+
+  */
+
+
+
   showDetailsPane(null,temp);
+  clearCompareInSVG(authors_copy[temp].author);
 }
 
 
 function compareContent(){
     $("#siderBar_papersContainer #sidePie").remove();
     $(".paperContainer").remove();
+    $("#siderBar_papersContainer").html('');
+
+    $("#siderBar_papersContainer").append("<div id='authors'>"+
+                                            "<div id='author1'>" + authors[candidate_one].author + "<div id='color1'></div></div>"+
+                                            "<div id='author2'> Vergleichspartner aussuchen </div>"+
+                                          "</div>"+
+                                          "<div class='separator'></div>"
+                                          );
  
     if(candidate_two!=null){
-      $("#siderBar_papersContainer").append("<p>Vergleich mit "+authors[candidate_two].author+"</p>");
+      $("#author2").html(authors[candidate_two].author + "<div id='color2'></div>");
+      $("#siderBar_papersContainer").append("<div id='bar1'><h4>Anzahl Paper:</h4></div>"+
+                                            "<div id='bar2'><h4>Anzahl Co-Autoren:</h4></div>");
+      makeBarCharts(candidate_one, candidate_two);
     }
-    else {
-      $("#siderBar_papersContainer").append("<p>Vergleichspartner aussuchen</p>");
-    }
+
+    
 }
