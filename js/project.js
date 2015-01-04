@@ -97,6 +97,12 @@ function drawCircles (json){
 				hideDetailsTooltip(d,i);
 		})
 		.on('click', function(d,i){
+
+			//compare functionality
+			if(compareMode == true){
+				compareAuthors(i,2);
+			}
+			else {
 			// show/hide slide in Panel
 			if(details_showing == true && d.name == current_name){
 				details_showing = false;
@@ -117,6 +123,7 @@ function drawCircles (json){
 					.style('fill', 'red');
 				selected_author = d.name;
 			}
+		  }
 		})
 	    .transition()
 	    .duration(500)
@@ -202,7 +209,7 @@ function createPie(author_index){
 			}
 		}
 
-		
+
 
     	// convert number array to js object
 		var data = new Array();
@@ -251,15 +258,15 @@ function createPie(author_index){
                 d.innerRadius = 60;
                 d.outerRadius = 100;
       			return "translate(" + arc.centroid(d) + ") " +
-                    	"rotate(" + getAngle(d) + ")";  
+                    	"rotate(" + getAngle(d) + ")";
             })
             .attr("text-anchor", "middle")
-            .text(function(d, i) { 
+            .text(function(d, i) {
             	if((d.endAngle - d.startAngle) < 0.3 ) return '';
-            	return data[i].label; 
+            	return data[i].label;
             });
 
-        
+
     }
 
 //Simulate click on node when using textual search

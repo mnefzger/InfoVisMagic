@@ -43,6 +43,13 @@ background: rgba(52,56,56,0.8);
 	display: block;
 }
 
+#compare_authors_button {
+	margin-left: 0px;
+	margin-top: 0px;
+	float: right;
+}
+
+
 #siderBar_papersContainer .paperContainer:hover {
 	background: #555;
 }
