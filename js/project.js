@@ -104,7 +104,7 @@ function drawCircles (json){
 			}
 			else {
 			// show/hide slide in Panel
-			if(details_showing == true && d.name == current_name){
+			if(details_showing == true && d.name == current_name && flag_candidateReset == false){
 				details_showing = false;
 				hideLinks();
 				hideDetailsPane();
@@ -288,7 +288,7 @@ function clearCompareInSVG(author){
 	    		.style('opacity',1)
 	    		.style('fill', function(d){return d.color});
 	    		console.log(author);
-	pickAuthor(author);    		
+	pickAuthor(author);
 
 }
 
@@ -297,7 +297,7 @@ function makeBarCharts(index1, index2){
 				.style('opacity', 0.2)
 	    		.style('fill', function(d){return d.color});
 
-	svg.selectAll("line").remove();		
+	svg.selectAll("line").remove();
 
 	var a1 = d3.selectAll('circle').filter(function(d, i) { return d.name == authors_copy[index1].author ; });
 	var a2 = d3.selectAll('circle').filter(function(d, i) { return d.name == authors_copy[index2].author ; });
@@ -313,7 +313,7 @@ function makeBarCharts(index1, index2){
 			.attr("height", 80)
 			.append("g")
 			.attr("transform", "translate(20 , 10)");
-	
+
 
 	var scale = d3.scale.linear()
     	.domain([0, d3.max(data)])
@@ -335,7 +335,7 @@ function makeBarCharts(index1, index2){
     	.duration(250)
     	.attr("width", function(d) { return scale(d); });
 
-    bars.append("text")	
+    bars.append("text")
     	.attr("text-anchor", "middle")
     	.text(function(d) { return d; })
     	.style('fill', '#fff')

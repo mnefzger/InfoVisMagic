@@ -1,6 +1,7 @@
 var compareMode = false; // compare two authors?
 var candidate_one = null;
 var candidate_two = null;
+var flag_candidateReset = false;
 
 function compareAuthors(authorIndex, candidate){ // set candidate to determine which candidate is overwritten
  compareMode = true;
@@ -42,18 +43,15 @@ function toggleCompareButton(){
 }
 
 function clearComparison(reset_candidate){
+  flag_candidateReset = true;
+
   compareMode = false;
   candidate_one = null;
   candidate_two = null;
 
-  /*
-
-  TODO: temp is always Alexander Wiethoff...?
-
-  */
-
   showDetailsPane(null,reset_candidate);
   clearCompareInSVG(authors_copy[reset_candidate].author);
+  flag_candidateReset = false;
 }
 
 
