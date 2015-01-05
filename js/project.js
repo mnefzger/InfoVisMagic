@@ -104,7 +104,7 @@ function drawCircles (json){
 			}
 			else {
 			// show/hide slide in Panel
-			if(details_showing == true && d.name == current_name && flag_candidateReset == false){
+			if(details_showing == true && d.name == current_name && !flag_candidateReset){
 				details_showing = false;
 				hideLinks();
 				hideDetailsPane();
@@ -130,6 +130,7 @@ function drawCircles (json){
 	    .delay(function(d,i){return d.r})
 	    .attr("r", function(d) { return d.r; })
 	    .style("fill", function(d) {
+			if(d.name == selected_author) return 'red';
 			return d.color;
 		});
 
@@ -273,7 +274,6 @@ function pickAuthor(author){
 	e.initUIEvent('click', true, true, window, 1);
 
 	var elem = d3.selectAll("circle").filter(function(d, i) { return d.name == author; });
-	elem.style('fill', 'red');
 	elem.node().dispatchEvent(e);
 }
 
