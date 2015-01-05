@@ -31,7 +31,7 @@ function toggleCompareButton(){
     $("#compare_authors_button").removeClass("active");
     $("#compare_authors_button span").removeClass("glyphicon-eye-close");
     $("#compare_authors_button span").addClass("glyphicon-eye-open");
-    clearComparison();
+    clearComparison(candidate_one);
   }
   else {
     $("#compare_authors_button").addClass("active");
@@ -41,12 +41,10 @@ function toggleCompareButton(){
   }
 }
 
-function clearComparison(){
-  temp = candidate_one;
+function clearComparison(reset_candidate){
   compareMode = false;
   candidate_one = null;
   candidate_two = null;
-
 
   /*
 
@@ -54,10 +52,8 @@ function clearComparison(){
 
   */
 
-
-
-  showDetailsPane(null,temp);
-  clearCompareInSVG(authors_copy[temp].author);
+  showDetailsPane(null,reset_candidate);
+  clearCompareInSVG(authors_copy[reset_candidate].author);
 }
 
 
@@ -72,7 +68,7 @@ function compareContent(){
                                           "</div>"+
                                           "<div class='separator'></div>"
                                           );
- 
+
     if(candidate_two!=null){
       $("#author2").html(authors[candidate_two].author + "<div id='color2'></div>");
       $("#siderBar_papersContainer").append("<div id='bar1'><h4>Anzahl Paper:</h4></div>"+
@@ -80,5 +76,5 @@ function compareContent(){
       makeBarCharts(candidate_one, candidate_two);
     }
 
-    
+
 }
