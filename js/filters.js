@@ -1,5 +1,6 @@
 var selected_years = yearsArray; // instantiate with all years selected.
 var authors_copy = new Array();
+var papers_copy = new Array();
 var compareTemp1;
 var compareTemp2;
 
@@ -17,6 +18,8 @@ function updateYearFilter(){
 
     //create deep copy of authors
     authors_copy = $.extend(true, [], authors);
+    papers_copy = $.extend(true, [], papers);
+    
 
     for(var i=0; i<authors_copy.length; i++){
         authors_copy[i].papers = authors_copy[i].papers.filter(isInYears);
@@ -24,6 +27,7 @@ function updateYearFilter(){
 
     //remove authors with empty papers
     authors_copy = authors_copy.filter(isEmpty);
+    papers_copy = papers_copy.filter(isInYears);
 
     // Update nodes of visualisation......
     nodes = new Array();

@@ -65,6 +65,7 @@ function success(data){
 
   //make the copy available from start
   authors_copy = authors;
+  papers_copy = papers;
 
   //calculate connections between authors
   calcLinks(authors);

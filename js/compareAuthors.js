@@ -72,7 +72,9 @@ function compareContent(){
       $("#author2").html(authors_copy[candidate_two].author + "<div id='color2'></div>");
       $("#siderBar_papersContainer").append("<div id='bar1'><h4>Anzahl Paper:</h4></div>"+
                                             "<div id='bar2'><h4>Anzahl Co-Autoren:</h4></div>"+
-                                            "<div id='bar3'><h4>&#216; Co-Autoren/Paper:</h4></div>");
+                                            "<div id='bar3'><h4>&#216; Co-Autoren/Paper:</h4></div>"+
+                                            "<div class='separator'></div>"+
+                                            "<div id='sharedPapers'><h4>Gemeinsame Paper:</h4></div>");
 
 
       // count co authors
@@ -88,6 +90,33 @@ function compareContent(){
       }
 
       makeBarCharts(candidate_one, candidate_two);
+
+      sharedPapers = new Array();
+      for(var i=0;i< papers_copy.length; i++){
+        if(papers_copy[i].authors.indexOf(authors_copy[candidate_one].author) != -1 &&
+           papers_copy[i].authors.indexOf(authors_copy[candidate_two].author) != -1 ){
+            sharedPapers.push(papers_copy[i]);
+        }
+      }
+      console.log(sharedPapers);
+
+      if(sharedPapers.length == 0){
+          $('#sharedPapers').append(
+             "<div class='paperContainer'>"
+              +   "Keine gemeinsamen Paper in den gewählten Jahren."
+              + "</div>"
+              );
+      }else {
+        for(var i=0;i<sharedPapers.length; i++){
+          $('#sharedPapers').append(
+               "<div class='paperContainer'>"
+              +   "<a href='" + sharedPapers[i].url + "' target='_blank'>"
+              +     "<strong>"+ sharedPapers[i].year + "</strong> | " + sharedPapers[i].title
+              +   "</a>"
+              + "</div>"
+            );
+        }
+      }
     }
 }
 
@@ -107,7 +136,7 @@ function makeBarCharts(index1, index2){
 
       var scale = d3.scale.linear()
       .domain([0, d3.max(data)])
-      .range([0, 315]);
+      .range([0, 300]);
 
       var bars = bar1SVG.selectAll("g.bars")
       .data(data)
@@ -148,7 +177,7 @@ function makeBarCharts(index1, index2){
 
       var scale = d3.scale.linear()
       .domain([0, d3.max(data2)])
-      .range([0, 315]);
+      .range([0, 300]);
 
       var bars2 = bar2SVG.selectAll("g.bars")
       .data(data2)
@@ -190,7 +219,7 @@ function makeBarCharts(index1, index2){
 
       var scale = d3.scale.linear()
       .domain([0, d3.max(data3)])
-      .range([0, 315]);
+      .range([0, 300]);
 
       var bars3 = bar3SVG.selectAll("g.bars")
       .data(data3)
