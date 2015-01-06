@@ -71,7 +71,8 @@ function compareContent(){
     if(candidate_two!=null){
       $("#author2").html(authors[candidate_two].author + "<div id='color2'></div>");
       $("#siderBar_papersContainer").append("<div id='bar1'><h4>Anzahl Paper:</h4></div>"+
-                                            "<div id='bar2'><h4>Anzahl Co-Autoren:</h4></div>");
+                                            "<div id='bar2'><h4>Anzahl Co-Autoren:</h4></div>"+
+                                            "<div id='bar3'><h4>&#216; Co-Autoren/Paper:</h4></div>");
 
 
       // count co auhors
@@ -145,7 +146,6 @@ function compareContent(){
 
 
       // Co authors Bar
-      console.log(co_authors[index1]);
       var data2 = [co_authors[index1], co_authors[index2]];
 
       var bar2SVG = d3.select("#bar2").append("svg")
@@ -183,6 +183,48 @@ function compareContent(){
       .attr("transform", function(d, i) {
         if(i==0) return "translate(" + (scale(data2[i])+15) + "," + 15 + ")";
         return "translate(" + (scale(data2[i])+15) + "," + (i*40) + ")";
+      });
+
+
+      // Co authors Bar
+      var data3 = [ Math.round( co_authors[index1]/authors_copy[index1].papers.length * 100) / 100, 
+                    Math.round( co_authors[index2]/authors_copy[index2].papers.length * 100) / 100];
+
+      var bar3SVG = d3.select("#bar3").append("svg")
+      .data([data3])
+      .attr("width", 375)
+      .attr("height", 80)
+      .append("g")
+      .attr("transform", "translate(20 , 10)");
+
+
+      var scale = d3.scale.linear()
+      .domain([0, d3.max(data3)])
+      .range([0, 325]);
+
+      var bars3 = bar3SVG.selectAll("g.bars")
+      .data(data3)
+      .enter().append("svg:g");
+
+      bars3.append("rect")
+      .attr("width", function(d) { return 0; })
+      .attr("height", 20)
+      .attr("y", function(d,i){return i*25;})
+      .style("fill", function(d,i){
+        if(i==0) return '#AEE239';
+        return '#FA6900';
+      })
+      .transition()
+      .duration(250)
+      .attr("width", function(d) { return scale(d); });
+
+      bars3.append("text")
+      .attr("text-anchor", "middle")
+      .text(function(d) { return d; })
+      .style('fill', '#fff')
+      .attr("transform", function(d, i) {
+        if(i==0) return "translate(" + (scale(data3[i])+15) + "," + 15 + ")";
+        return "translate(" + (scale(data3[i])+15) + "," + (i*40) + ")";
       });
     }
 
