@@ -33,7 +33,9 @@ var display =  function(){
     		selected_author = '';
     		details_showing = false;
 			hideDetailsPane();
-			if(compareMode) compareMode = false;
+			if(compareMode){
+				clearComparison(candidate_one);
+			} 
     	});
 
     //scale data to fit screen
@@ -129,11 +131,13 @@ function drawCircles (json){
 	    .duration(500)
 	    .delay(function(d,i){return d.r})
 	    .attr("r", function(d) { return d.r; })
-	    .style("fill", function(d) {
+	    .style("fill", function(d,i) {
+	    	if(i == candidate_one) return '#AEE239';
+	    	if(i == candidate_two) return '#FA6900';
 			if(d.name == selected_author) return 'red';
 			return d.color;
-		});
 
+		});
 
 
     function showLinks(index){

@@ -1,11 +1,19 @@
 var selected_years = yearsArray; // instantiate with all years selected.
 var authors_copy = new Array();
+var compareTemp1;
+var compareTemp2;
+
 
 function updateYearFilter(){
    selected_years = new Array(); // empty array
     $('#year_picker option:selected').each(function() {
       selected_years.push($(this).val());
     });
+
+    if(compareMode){
+      compareTemp1 = authors_copy[candidate_one].author;
+      compareTemp2 = authors_copy[candidate_two].author;
+    }
 
     //create deep copy of authors
     authors_copy = $.extend(true, [], authors);
@@ -25,7 +33,12 @@ function updateYearFilter(){
           size: Math.max(1, linearScale(authors_copy[i].papers.length)),
           paperCount: authors_copy[i].papers.length,
           color: randomColor({luminosity: 'light', hue: 'blue'})
-      });
+      }); 
+
+      if(compareMode){
+        if(authors_copy[i].author == compareTemp1) candidate_one = i;
+        if(authors_copy[i].author == compareTemp2) candidate_two = i;
+      }
     }
 
     var json = {
@@ -38,8 +51,13 @@ function updateYearFilter(){
     calcLinks(authors_copy);
 
     // remember the old selection
-    if(selected_author != '') {
+    if(selected_author != '' && !compareMode) {
       pickAuthor(selected_author);
+    }
+
+    if(compareMode){
+      compareAuthors(candidate_one, 1);
+      compareAuthors(candidate_two, 2);
     }
 }
 

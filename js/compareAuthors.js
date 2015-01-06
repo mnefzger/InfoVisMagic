@@ -23,7 +23,7 @@ function compareAuthors(authorIndex, candidate){ // set candidate to determine w
  }
 
  if(compareMode == true){
- compareContent();
+   compareContent();
  }
 
 }
@@ -62,20 +62,20 @@ function compareContent(){
     $("#siderBar_papersContainer").html('');
 
     $("#siderBar_papersContainer").append("<div id='authors'>"+
-                                            "<div id='author1'>" + authors[candidate_one].author + "<div id='color1'></div></div>"+
+                                            "<div id='author1'>" + authors_copy[candidate_one].author + "<div id='color1'></div></div>"+
                                             "<div id='author2'> <span class='missing_candidate'>Vergleichspartner aussuchen</span> </div>"+
                                           "</div>"+
                                           "<div class='separator'></div>"
                                           );
 
     if(candidate_two!=null){
-      $("#author2").html(authors[candidate_two].author + "<div id='color2'></div>");
+      $("#author2").html(authors_copy[candidate_two].author + "<div id='color2'></div>");
       $("#siderBar_papersContainer").append("<div id='bar1'><h4>Anzahl Paper:</h4></div>"+
                                             "<div id='bar2'><h4>Anzahl Co-Autoren:</h4></div>"+
                                             "<div id='bar3'><h4>&#216; Co-Autoren/Paper:</h4></div>");
 
 
-      // count co auhors
+      // count co authors
       co_authors[candidate_one] = 0;
       co_authors[candidate_two] = 0;
       for(i=0; i<links.length; i++){
@@ -87,29 +87,19 @@ function compareContent(){
         }
       }
 
-      console.log("co authors: "+co_authors[candidate_one] +" | "+co_authors[candidate_two]);
       makeBarCharts(candidate_one, candidate_two);
     }
+}
 
-
-    function makeBarCharts(index1, index2){
-      d3.selectAll('circle')
-      .style('opacity', 0.2)
-      .style('fill', function(d){return d.color});
-
-      svg.selectAll("line").remove();
-
-      var a1 = d3.selectAll('circle').filter(function(d, i) { return d.name == authors_copy[index1].author ; });
-      var a2 = d3.selectAll('circle').filter(function(d, i) { return d.name == authors_copy[index2].author ; });
-      a1.style('fill', '#AEE239').style('opacity', 1);
-      a2.style('fill', '#FA6900').style('opacity', 1);
+function makeBarCharts(index1, index2){
+      prepareCompare(index1, index2);
 
 
       var data = [authors_copy[index1].papers.length, authors_copy[index2].papers.length];
 
       var bar1SVG = d3.select("#bar1").append("svg")
       .data([data])
-      .attr("width", 375)
+      .attr("width", 380)
       .attr("height", 80)
       .append("g")
       .attr("transform", "translate(20 , 10)");
@@ -117,7 +107,7 @@ function compareContent(){
 
       var scale = d3.scale.linear()
       .domain([0, d3.max(data)])
-      .range([0, 325]);
+      .range([0, 315]);
 
       var bars = bar1SVG.selectAll("g.bars")
       .data(data)
@@ -150,7 +140,7 @@ function compareContent(){
 
       var bar2SVG = d3.select("#bar2").append("svg")
       .data([data2])
-      .attr("width", 375)
+      .attr("width", 380)
       .attr("height", 80)
       .append("g")
       .attr("transform", "translate(20 , 10)");
@@ -158,7 +148,7 @@ function compareContent(){
 
       var scale = d3.scale.linear()
       .domain([0, d3.max(data2)])
-      .range([0, 325]);
+      .range([0, 315]);
 
       var bars2 = bar2SVG.selectAll("g.bars")
       .data(data2)
@@ -192,7 +182,7 @@ function compareContent(){
 
       var bar3SVG = d3.select("#bar3").append("svg")
       .data([data3])
-      .attr("width", 375)
+      .attr("width", 380)
       .attr("height", 80)
       .append("g")
       .attr("transform", "translate(20 , 10)");
@@ -200,7 +190,7 @@ function compareContent(){
 
       var scale = d3.scale.linear()
       .domain([0, d3.max(data3)])
-      .range([0, 325]);
+      .range([0, 315]);
 
       var bars3 = bar3SVG.selectAll("g.bars")
       .data(data3)
@@ -228,4 +218,15 @@ function compareContent(){
       });
     }
 
-}
+    function prepareCompare(index1, index2){
+      d3.selectAll('circle')
+      .style('opacity', 0.2)
+      .style('fill', function(d){return d.color});
+
+      svg.selectAll("line").remove();
+
+      var a1 = d3.selectAll('circle').filter(function(d, i) { return d.name == authors_copy[index1].author ; });
+      var a2 = d3.selectAll('circle').filter(function(d, i) { return d.name == authors_copy[index2].author ; });
+      a1.style('fill', '#AEE239').style('opacity', 1);
+      a2.style('fill', '#FA6900').style('opacity', 1);
+    }
