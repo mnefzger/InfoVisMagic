@@ -11,9 +11,11 @@ function updateYearFilter(){
       selected_years.push($(this).val());
     });
 
-    if(compareMode){
-      compareTemp1 = authors_copy[candidate_one].author;
-      compareTemp2 = authors_copy[candidate_two].author;
+    if(compareMode &&
+       authors_copy[candidate_one] != undefined && 
+       authors_copy[candidate_two] != undefined){
+          compareTemp1 = authors_copy[candidate_one].author;
+          compareTemp2 = authors_copy[candidate_two].author;
     }
 
     //create deep copy of authors
