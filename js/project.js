@@ -17,8 +17,7 @@ var display =  function(){
 		.attr("width", WIDTH)
 		.attr("height", HEIGHT)
 		.attr("shape-rendering", "auto")
-		.append("g")
-    	.call(d3.behavior.zoom().scaleExtent([0.2, 10]).on("zoom", zoom));
+		.append("g");
 
     //create white background
     var background = svg.append('rect')
@@ -67,9 +66,6 @@ var display =  function(){
 
 	drawCircles(data);
 
-	function zoom() {
-  		svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-	}
 
 }
 
